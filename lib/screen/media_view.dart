@@ -25,9 +25,9 @@ class MediaView extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         ThumbnailMediaFile(
-          onTap: () {
+          onTap: () async {
             if (file.thumbnail != null) {
-              Get.to(ImageViewScreen(mediaFile: file));
+              await Get.to(ImageViewScreen(mediaFile: file));
             }
           },
           file: file,
