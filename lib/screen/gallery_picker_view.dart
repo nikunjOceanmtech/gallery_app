@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gallery_app/controller/gallery_controller.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/global.dart';
 import 'package:gallery_app/models/config.dart';
 import 'package:gallery_app/models/gallery_album.dart';
@@ -9,7 +10,6 @@ import 'package:gallery_app/screen/album_page.dart';
 import 'package:gallery_app/screen/appbars.dart';
 import 'package:gallery_app/screen/album_categories_view.dart';
 import 'package:gallery_app/screen/permission_denied_view.dart';
-import 'package:get/get.dart';
 
 class GalleryPickerView extends StatefulWidget {
   final Config? config;
@@ -49,46 +49,26 @@ class GalleryPickerView extends StatefulWidget {
 }
 
 class _GalleryPickerState extends State<GalleryPickerView> {
-  late PhoneGalleryController galleryController;
   bool noPhotoSeleceted = false;
   late Config config;
 
   @override
   void initState() {
-    if (GetInstance().isRegistered<PhoneGalleryController>()) {
-      galleryController = Get.find<PhoneGalleryController>();
-      if (galleryController.configurationCompleted) {
-        galleryController.updateConfig(widget.config);
-      } else {
-        galleryController.configuration(
-          widget.config,
-          onSelect: widget.onSelect,
-          startWithRecent: widget.startWithRecent,
-          heroBuilder: widget.heroBuilder,
-          multipleMediasBuilder: widget.multipleMediaBuilder,
-          initSelectedMedias: widget.initSelectedMedia,
-          extraRecentMedia: widget.extraRecentMedia,
-          isRecent: widget.startWithRecent,
-          isVideo: true,
-        );
-      }
-    } else {
-      galleryController = Get.put(PhoneGalleryController());
-      galleryController.configuration(
-        widget.config,
-        onSelect: widget.onSelect,
-        startWithRecent: widget.startWithRecent,
-        heroBuilder: widget.heroBuilder,
-        multipleMediasBuilder: widget.multipleMediaBuilder,
-        initSelectedMedias: widget.initSelectedMedia,
-        extraRecentMedia: widget.extraRecentMedia,
-        isRecent: widget.startWithRecent,
-        isVideo: true,
-      );
-    }
-    config = galleryController.config;
-    if (!galleryController.isInitialized) {
-      galleryController.initializeAlbums(locale: widget.locale, isVideo: false);
+    galleryPickerCubit.updateConfig(widget.config);
+    galleryPickerCubit.configuration(
+      galleryPickerCubit.config,
+      onSelect: widget.onSelect,
+      startWithRecent: widget.startWithRecent,
+      heroBuilder: widget.heroBuilder,
+      multipleMediasBuilder: widget.multipleMediaBuilder,
+      initSelectedMedias: widget.initSelectedMedia,
+      extraRecentMedia: widget.extraRecentMedia,
+      isRecent: widget.startWithRecent,
+      isVideo: true,
+    );
+    config = galleryPickerCubit.config;
+    if (!galleryPickerCubit.isInitialized) {
+      galleryPickerCubit.initializeAlbums(locale: widget.locale, isVideo: false);
     }
     super.initState();
   }
@@ -103,105 +83,86 @@ class _GalleryPickerState extends State<GalleryPickerView> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return GetBuilder<PhoneGalleryController>(
-      builder: (controller) {
-        return GetInstance().isRegistered<PhoneGalleryController>()
-            ? controller.permissionGranted != false
-                ? PageView(
-                    controller: controller.pageController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      PopScope(
-                        canPop: true,
-                        onPopInvoked: (value) {
-                          if (!widget.isBottomSheet) {
-                            controller.disposeController();
-                          }
-                        },
-                        child: Scaffold(
-                          backgroundColor: config.backgroundColor,
-                          appBar: customAppBar(
-                            controller: controller,
-                            actions: [
-                              Text(
-                                "Videos Show :-",
-                                style: TextStyle(
-                                  color: AppColor.blackColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              Checkbox(
-                                value: noPhotoSeleceted,
-                                onChanged: (value) async {
-                                  noPhotoSeleceted = value ?? false;
-                                  await galleryController.initializeAlbums(
-                                    locale: widget.locale,
-                                    isVideo: noPhotoSeleceted,
-                                  );
-                                  setState(() {});
-                                },
-                              ),
-                            ],
+    return BlocBuilder<GalleryPickerCubit, double>(
+      bloc: galleryPickerCubit,
+      builder: (context, state) {
+        return galleryPickerCubit.permissionGranted != false
+            ? PageView(
+                controller: galleryPickerCubit.pageController,
+                physics: const NeverScrollableScrollPhysics(),
+                children: [
+                  PopScope(
+                    canPop: true,
+                    onPopInvoked: (value) {
+                      if (!widget.isBottomSheet) {
+                        galleryPickerCubit.disposeController();
+                      }
+                    },
+                    child: Scaffold(
+                      backgroundColor: config.backgroundColor,
+                      appBar: customAppBar(
+                        context: context,
+                        controller: galleryPickerCubit,
+                        actions: [
+                          Text(
+                            "Videos Show :-",
+                            style: TextStyle(
+                              color: AppColor.blackColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
-                          body: Column(
-                            children: [
-                              tabBarView(width: width, controller: controller),
-                              screenView(controller: controller),
-                            ],
+                          Checkbox(
+                            value: noPhotoSeleceted,
+                            onChanged: (value) async {
+                              noPhotoSeleceted = value ?? false;
+                              await galleryPickerCubit.initializeAlbums(
+                                locale: widget.locale,
+                                isVideo: noPhotoSeleceted,
+                              );
+                            },
                           ),
-                        ),
+                        ],
                       ),
-                      AlbumPage(
-                        album: controller.selectedAlbum,
-                        controller: controller,
-                        singleMedia: widget.singleMedia,
-                        isBottomSheet: widget.isBottomSheet,
-                      )
-                    ],
+                      body: Column(
+                        children: [
+                          tabBarView(width: width),
+                          screenView(),
+                        ],
+                      ),
+                    ),
+                  ),
+                  AlbumPage(
+                    album: galleryPickerCubit.selectedAlbum,
+                    controller: galleryPickerCubit,
+                    singleMedia: widget.singleMedia,
+                    isBottomSheet: widget.isBottomSheet,
                   )
-                : controller.config.permissionDeniedPage ?? PermissionDeniedView(config: controller.config)
-            // : ReloadGallery(
-            //     config,
-            //     onPressed: () async {
-            //       galleryController = Get.put(PhoneGalleryController());
-            //       galleryController.configuration(widget.config,
-            //           onSelect: widget.onSelect,
-            //           startWithRecent: widget.startWithRecent,
-            //           heroBuilder: widget.heroBuilder,
-            //           multipleMediasBuilder: widget.multipleMediaBuilder,
-            //           initSelectedMedias: widget.initSelectedMedia,
-            //           extraRecentMedia: widget.extraRecentMedia,
-            //           isRecent: widget.startWithRecent);
-            //       if (!controller.isInitialized) {
-            //         await controller.initializeAlbums(locale: widget.locale);
-            //       }
-            //       setState(() {});
-            //     },
-            //   );
-            : const SizedBox.shrink();
+                ],
+              )
+            : galleryPickerCubit.config.permissionDeniedPage ?? PermissionDeniedView(config: galleryPickerCubit.config);
       },
     );
   }
 
-  Widget screenView({required PhoneGalleryController controller}) {
+  Widget screenView() {
     return Expanded(
       child: PageView(
-        controller: controller.pickerPageController,
+        controller: galleryPickerCubit.pickerPageController,
         onPageChanged: (value) {
           if (value == 0) {
-            controller.isRecent = true;
-            controller.switchPickerMode(false);
+            galleryPickerCubit.isRecent = true;
+            galleryPickerCubit.switchPickerMode(false);
           } else {
-            controller.isRecent = false;
-            controller.switchPickerMode(false);
+            galleryPickerCubit.isRecent = false;
+            galleryPickerCubit.switchPickerMode(false);
           }
         },
         scrollDirection: Axis.horizontal,
         children: [
-          imagesView(controller: controller),
+          imagesView(),
           AlbumCategoriesView(
-            controller: controller,
+            controller: galleryPickerCubit,
             isBottomSheet: widget.isBottomSheet,
             singleMedia: widget.singleMedia,
           ),
@@ -210,13 +171,13 @@ class _GalleryPickerState extends State<GalleryPickerView> {
     );
   }
 
-  Widget imagesView({required PhoneGalleryController controller}) {
-    return controller.isInitialized && controller.recent != null
+  Widget imagesView() {
+    return galleryPickerCubit.isInitialized && galleryPickerCubit.recent != null
         ? 1 != 1
             ? const SizedBox.shrink()
             : AlbumMediasView(
-                galleryAlbum: controller.recent!,
-                controller: controller,
+                galleryAlbum: galleryPickerCubit.recent!,
+                controller: galleryPickerCubit,
                 isBottomSheet: widget.isBottomSheet,
                 singleMedia: widget.singleMedia,
               )
@@ -227,7 +188,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
           );
   }
 
-  Widget tabBarView({required PhoneGalleryController controller, required double width}) {
+  Widget tabBarView({required double width}) {
     return Container(
       width: width,
       height: 48,
@@ -236,7 +197,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           Container(
-            decoration: controller.isRecent
+            decoration: galleryPickerCubit.isRecent
                 ? BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -250,7 +211,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
             width: width / 2,
             child: TextButton(
               onPressed: () {
-                controller.pickerPageController.animateToPage(
+                galleryPickerCubit.pickerPageController.animateToPage(
                   0,
                   duration: const Duration(
                     milliseconds: 50,
@@ -258,18 +219,18 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                   curve: Curves.easeIn,
                 );
                 setState(() {
-                  controller.isRecent = true;
-                  controller.switchPickerMode(false);
+                  galleryPickerCubit.isRecent = true;
+                  galleryPickerCubit.switchPickerMode(false);
                 });
               },
               child: Text(
                 config.recents,
-                style: controller.isRecent ? config.selectedMenuStyle : config.unselectedMenuStyle,
+                style: galleryPickerCubit.isRecent ? config.selectedMenuStyle : config.unselectedMenuStyle,
               ),
             ),
           ),
           Container(
-            decoration: !controller.isRecent
+            decoration: !galleryPickerCubit.isRecent
                 ? BoxDecoration(
                     border: Border(
                       bottom: BorderSide(
@@ -283,17 +244,17 @@ class _GalleryPickerState extends State<GalleryPickerView> {
             width: width / 2,
             child: TextButton(
               onPressed: () {
-                controller.pickerPageController.animateToPage(
+                galleryPickerCubit.pickerPageController.animateToPage(
                   1,
                   duration: const Duration(milliseconds: 50),
                   curve: Curves.easeIn,
                 );
-                controller.isRecent = false;
-                controller.switchPickerMode(false);
+                galleryPickerCubit.isRecent = false;
+                galleryPickerCubit.switchPickerMode(false);
               },
               child: Text(
                 config.gallery,
-                style: controller.isRecent ? config.unselectedMenuStyle : config.selectedMenuStyle,
+                style: galleryPickerCubit.isRecent ? config.unselectedMenuStyle : config.selectedMenuStyle,
               ),
             ),
           )

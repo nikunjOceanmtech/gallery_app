@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:gallery_app/controller/gallery_controller.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/models/gallery_album.dart';
 import 'package:gallery_app/screen/grid_view_staticd.dart';
 import 'package:gallery_app/screen/media_view.dart';
 
 class DateCategoryView extends StatelessWidget {
-  final PhoneGalleryController controller;
+  final GalleryPickerCubit controller;
   final bool singleMedia;
   final DateCategory category;
   final bool isBottomSheet;

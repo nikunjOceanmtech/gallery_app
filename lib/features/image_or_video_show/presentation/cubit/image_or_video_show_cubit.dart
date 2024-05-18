@@ -33,7 +33,6 @@ class ImageOrVideoShowCubit extends Cubit<double> {
   }
 
   void seekDuration({required int value}) {
-    print("======$value");
     videoController?.seekTo(Duration(seconds: value)).then(
       (value) {
         emit(Random().nextDouble());

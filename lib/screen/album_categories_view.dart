@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:gallery_app/controller/gallery_controller.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/models/config.dart';
 import 'package:gallery_app/screen/thumbnail_album.dart';
 
 class AlbumCategoriesView extends StatelessWidget {
-  final PhoneGalleryController controller;
+  final GalleryPickerCubit controller;
   final Config config;
   final bool isBottomSheet;
   final bool singleMedia;
@@ -29,9 +29,6 @@ class AlbumCategoriesView extends StatelessWidget {
             return GestureDetector(
               onTap: () => controller.changeAlbum(
                 album: controller.galleryAlbums[index],
-                isBottomSheet: isBottomSheet,
-                controller: controller,
-                singleMedia: singleMedia,
                 context: context,
               ),
               child: Stack(

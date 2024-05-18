@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gallery_app/controller/gallery_controller.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/models/gallery_album.dart';
 import 'package:gallery_app/screen/album_medias_view.dart';
 import 'package:gallery_app/screen/appbars.dart';
 
 class AlbumPage extends StatelessWidget {
   final bool singleMedia;
-  final PhoneGalleryController controller;
+  final GalleryPickerCubit controller;
   final GalleryAlbum? album;
   final bool isBottomSheet;
 
@@ -29,6 +29,7 @@ class AlbumPage extends StatelessWidget {
         backgroundColor: controller.config.backgroundColor,
         appBar: album != null
             ? customAppBar(
+                context: context,
                 isLeadingIcon: true,
                 album: album!,
                 controller: controller,

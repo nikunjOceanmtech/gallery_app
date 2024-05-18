@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 
 final Uint8List kTransparentImage = Uint8List.fromList(
   <int>[
@@ -86,3 +87,5 @@ Widget commonLoadingBar() {
     backgroundColor: AppColor.primaryColor,
   );
 }
+
+late GalleryPickerCubit galleryPickerCubit;
