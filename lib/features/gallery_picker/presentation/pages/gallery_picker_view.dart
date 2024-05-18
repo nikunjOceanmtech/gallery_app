@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/pages/album_categories_view.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/pages/album_medias_view.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/pages/album_page.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/pages/appbars.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/pages/permission_denied_view.dart';
 import 'package:gallery_app/global.dart';
 import 'package:gallery_app/models/config.dart';
 import 'package:gallery_app/models/gallery_album.dart';
 import 'package:gallery_app/models/media_file.dart';
-import 'package:gallery_app/screen/album_medias_view.dart';
-import 'package:gallery_app/screen/album_page.dart';
-import 'package:gallery_app/screen/appbars.dart';
-import 'package:gallery_app/screen/album_categories_view.dart';
-import 'package:gallery_app/screen/permission_denied_view.dart';
 
 class GalleryPickerView extends StatefulWidget {
   final Config? config;

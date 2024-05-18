@@ -6,7 +6,7 @@ import 'package:gallery_app/di/get_it.dart' as get_it;
 import 'package:gallery_app/di/get_it.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/global.dart';
-import 'package:gallery_app/screen/gallery_picker_view.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/pages/gallery_picker_view.dart';
 
 void main() {
   unawaited(get_it.init());

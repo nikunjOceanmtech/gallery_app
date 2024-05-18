@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/pages/thumbnail_media_file.dart';
 import 'package:gallery_app/features/image_or_video_show/presentation/view/image_or_video_show_screen.dart';
 import 'package:gallery_app/models/media_file.dart';
-import 'package:gallery_app/screen/thumbnail_media_file.dart';
 
 class MediaView extends StatelessWidget {
   final MediaFile file;

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/pages/thumbnail_album.dart';
 import 'package:gallery_app/models/config.dart';
-import 'package:gallery_app/screen/thumbnail_album.dart';
 
 class AlbumCategoriesView extends StatelessWidget {
   final GalleryPickerCubit controller;
