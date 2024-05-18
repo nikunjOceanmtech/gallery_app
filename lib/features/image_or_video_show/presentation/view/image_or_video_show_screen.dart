@@ -3,7 +3,6 @@ import 'package:gallery_app/di/get_it.dart';
 import 'package:gallery_app/features/image_or_video_show/presentation/cubit/image_or_video_show_cubit.dart';
 import 'package:gallery_app/global.dart';
 import 'package:gallery_app/models/media_file.dart';
-import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -74,7 +73,7 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
                   ),
                 ),
                 IconButton(
-                  onPressed: () => Get.back(),
+                  onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.arrow_back_ios_new_rounded, color: AppColor.whiteColor),
                 ),
               ],

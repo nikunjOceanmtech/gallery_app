@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gallery_app/controller/gallery_controller.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/global.dart';
 import 'package:gallery_app/models/media_file.dart';
 
 class ThumbnailMediaFile extends StatelessWidget {
   final MediaFile file;
   final Color failIconColor;
-  final PhoneGalleryController controller;
+  final GalleryPickerCubit controller;
   final BoxFit fit;
   final double? width, height;
   final double radius, borderWidth;

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gallery_app/controller/gallery_controller.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/global.dart';
 import 'package:gallery_app/models/gallery_album.dart';
-import 'package:get/get.dart';
 
 AppBar customAppBar({
+  required BuildContext context,
   GalleryAlbum? album,
-  PhoneGalleryController? controller,
+  GalleryPickerCubit? controller,
   List<Widget>? actions,
   bool isLeadingIcon = false,
   bool isBack = false,
@@ -20,7 +20,7 @@ AppBar customAppBar({
     leadingWidth: isLeadingIcon ? 50 : 0,
     leading: isLeadingIcon
         ? IconButton(
-            onPressed: () => isBack ? Get.back() : controller?.backToPicker(),
+            onPressed: () => isBack ? Navigator.pop(context) : controller?.backToPicker(),
             icon: Icon(Icons.arrow_back_ios_new_rounded, color: leadingIconColor ?? AppColor.blackColor),
           )
         : const SizedBox.shrink(),
@@ -36,7 +36,7 @@ AppBar customAppBar({
   );
 }
 
-String getTitle({GalleryAlbum? album, PhoneGalleryController? controller}) {
+String getTitle({GalleryAlbum? album, GalleryPickerCubit? controller}) {
   if (!(controller?.pickerMode ?? false) && (controller?.selectedFiles.isEmpty ?? false)) {
     return "${album?.name}";
   } else if ((controller?.pickerMode ?? false) && (controller?.selectedFiles.isEmpty ?? false)) {

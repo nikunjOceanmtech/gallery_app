@@ -1,19 +1,42 @@
-import 'dart:async';
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+import 'dart:math';
+
+import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:gallery_app/models/config.dart';
+import 'package:gallery_app/models/gallery_album.dart';
+import 'package:gallery_app/models/gallery_media.dart';
+import 'package:gallery_app/models/media_file.dart';
+import 'package:gallery_app/models/medium.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
-import '../models/config.dart';
-import '../models/gallery_media.dart';
-import '../models/media_file.dart';
-import '/models/gallery_album.dart';
-import '/models/medium.dart';
-import 'picker_listener.dart';
 
-class PhoneGalleryController extends GetxController {
+class GalleryPickerCubit extends Cubit<double> {
+  GalleryPickerCubit() : super(0);
+
+  late bool startWithRecent;
+  late bool isRecent;
+  bool? permissionGranted;
+  bool configurationCompleted = false;
+  late Function(List<MediaFile> selectedMedias) onSelect;
+  Widget Function(String tag, MediaFile media, BuildContext context)? heroBuilder;
+  Widget Function(List<MediaFile> medias, BuildContext context)? multipleMediasBuilder;
+  GalleryMedia? _media;
+  GalleryMedia? get media => _media;
+  List<GalleryAlbum> get galleryAlbums => _media == null ? [] : _media!.albums;
+  List<MediaFile> _selectedFiles = [];
+  List<MediaFile>? _extraRecentMedia;
+  List<MediaFile> get selectedFiles => _selectedFiles;
+  bool _isInitialized = false;
+  bool get isInitialized => _isInitialized;
+  List<MediaFile>? get extraRecentMedia => _extraRecentMedia;
+  bool _pickerMode = false;
+  bool get pickerMode => _pickerMode;
+  late PageController pageController;
+  late PageController pickerPageController;
+  GalleryAlbum? selectedAlbum;
   late Config config;
 
   void configuration(
@@ -37,64 +60,50 @@ class PhoneGalleryController extends GetxController {
     this.config = config ?? Config();
     if (initSelectedMedias != null) {
       _selectedFiles = initSelectedMedias.map((e) => e).toList();
+      emit(Random().nextDouble());
     }
     if (extraRecentMedia != null) {
       _extraRecentMedia = extraRecentMedia.map((e) => e).toList();
+      emit(Random().nextDouble());
     }
     if (selectedFiles.isNotEmpty) {
       _pickerMode = true;
+      emit(Random().nextDouble());
     }
     configurationCompleted = true;
+    emit(Random().nextDouble());
   }
-
-  late bool startWithRecent;
-  late bool isRecent;
-  bool? permissionGranted;
-  bool configurationCompleted = false;
-  late Function(List<MediaFile> selectedMedias) onSelect;
-  Widget Function(String tag, MediaFile media, BuildContext context)? heroBuilder;
-  Widget Function(List<MediaFile> medias, BuildContext context)? multipleMediasBuilder;
-  GalleryMedia? _media;
-  GalleryMedia? get media => _media;
-  List<GalleryAlbum> get galleryAlbums => _media == null ? [] : _media!.albums;
-  List<MediaFile> _selectedFiles = [];
-  List<MediaFile>? _extraRecentMedia;
-  List<MediaFile> get selectedFiles => _selectedFiles;
-  bool _isInitialized = false;
-  bool get isInitialized => _isInitialized;
-  List<MediaFile>? get extraRecentMedia => _extraRecentMedia;
-  bool _pickerMode = false;
-  bool get pickerMode => _pickerMode;
-  late PageController pageController;
-  late PageController pickerPageController;
-  GalleryAlbum? selectedAlbum;
 
   void resetBottomSheetView() {
     if (permissionGranted == true) {
       isRecent = true;
       if (selectedAlbum == null) {
         pickerPageController.jumpToPage(0);
+        emit(Random().nextDouble());
       } else {
         pageController.jumpToPage(0);
         pickerPageController = PageController();
+        emit(Random().nextDouble());
       }
       selectedAlbum = null;
-      update();
+      emit(Random().nextDouble());
     }
   }
 
   void updateConfig(Config? config) {
     this.config = config ?? Config();
+    emit(Random().nextDouble());
   }
 
   void updateSelectedFiles(List<MediaFile> media) {
     _selectedFiles = media.map((e) => e).toList();
     if (selectedFiles.isEmpty) {
       _pickerMode = false;
+      emit(Random().nextDouble());
     } else {
       _pickerMode = true;
+      emit(Random().nextDouble());
     }
-    update();
   }
 
   void updateExtraRecentMedia(List<MediaFile> media) {
@@ -102,32 +111,27 @@ class PhoneGalleryController extends GetxController {
     GalleryAlbum? recentTmp = recent;
     if (recentTmp != null) {
       _extraRecentMedia!.removeWhere((element) => recentTmp.files.any((file) => element.id == file.id));
+      emit(Random().nextDouble());
     }
-    update();
   }
 
-  Future<void> changeAlbum({
-    required GalleryAlbum album,
-    required BuildContext context,
-    required PhoneGalleryController controller,
-    required bool singleMedia,
-    required bool isBottomSheet,
-  }) async {
+  Future<void> changeAlbum({required GalleryAlbum album, required BuildContext context}) async {
     _selectedFiles.clear();
     selectedAlbum = album;
-    update();
+
     updatePickerListener();
     await pageController.animateToPage(1, duration: const Duration(milliseconds: 100), curve: Curves.easeIn);
+    emit(Random().nextDouble());
   }
 
   Future<void> backToPicker() async {
     _selectedFiles.clear();
     _pickerMode = false;
     pickerPageController = PageController(initialPage: 1);
-    update();
+
     await pageController.animateToPage(0, duration: const Duration(milliseconds: 500), curve: Curves.easeIn);
     selectedAlbum = null;
-    update();
+    emit(Random().nextDouble());
   }
 
   void unselectMedia(MediaFile file) {
@@ -135,7 +139,7 @@ class PhoneGalleryController extends GetxController {
     if (_selectedFiles.isEmpty) {
       _pickerMode = false;
     }
-    update();
+
     updatePickerListener();
   }
 
@@ -146,7 +150,7 @@ class PhoneGalleryController extends GetxController {
     if (!_pickerMode) {
       _pickerMode = true;
     }
-    update();
+
     updatePickerListener();
   }
 
@@ -156,26 +160,24 @@ class PhoneGalleryController extends GetxController {
       updatePickerListener();
     }
     _pickerMode = value;
-    update();
+    emit(Random().nextDouble());
   }
 
   void updatePickerListener() {
-    if (GetInstance().isRegistered<PickerListener>()) {
-      Get.find<PickerListener>().updateController(_selectedFiles);
-    }
+    emit(Random().nextDouble());
   }
 
   static Future<bool> promptPermissionSetting() async {
     if (Platform.isAndroid) {
-      if (await PhoneGalleryController.requestPermission(Permission.photos)) {
-        return await PhoneGalleryController.requestPermission(Permission.videos);
+      if (await requestPermission(Permission.photos)) {
+        return await requestPermission(Permission.videos);
       } else {
         return false;
       }
     }
-    bool statusStorage = await PhoneGalleryController.requestPermission(Permission.storage);
+    bool statusStorage = await requestPermission(Permission.storage);
     if (statusStorage) {
-      return await PhoneGalleryController.requestPermission(Permission.photos);
+      return await requestPermission(Permission.photos);
     }
     return false;
   }
@@ -193,7 +195,7 @@ class PhoneGalleryController extends GetxController {
   }
 
   Future<void> initializeAlbums({Locale? locale, bool isVideo = false}) async {
-    _media = await PhoneGalleryController.collectGallery(locale: locale, isVideo: isVideo);
+    _media = await collectGallery(locale: locale, isVideo: isVideo);
     if (_media != null) {
       if (_extraRecentMedia != null) {
         GalleryAlbum? recentTmp = recent;
@@ -203,23 +205,25 @@ class PhoneGalleryController extends GetxController {
       }
       permissionGranted = true;
       _isInitialized = true;
+      emit(Random().nextDouble());
     } else {
       permissionGranted = false;
       permissionListener(locale: locale);
+      emit(Random().nextDouble());
     }
-    update();
   }
 
   void permissionListener({Locale? locale}) {
     Timer.periodic(
       const Duration(seconds: 1),
-      (timer) async {
+      (Timer timer) async {
         if (await isGranted()) {
-          initializeAlbums(locale: locale, isVideo: true);
+          await initializeAlbums(locale: locale, isVideo: true);
           timer.cancel();
         }
       },
     );
+    emit(Random().nextDouble());
   }
 
   Future<bool> isGranted() async {
@@ -300,29 +304,12 @@ class PhoneGalleryController extends GetxController {
   }
 
   GalleryAlbum? get recent {
-    return galleryAlbums.isNotEmpty ? galleryAlbums.singleWhere((element) => element.album.name == "All") : null;
+    return galleryAlbums.isNotEmpty
+        ? galleryAlbums.singleWhere(
+            (element) => element.album.name == "All",
+          )
+        : null;
   }
-  //GalleryAlbum? get recent {
-  //  if (_isInitialized) {
-  //    GalleryAlbum? recent;
-  //    for (var album in _galleryAlbums) {
-  //      if (recent == null || (album.count > recent.count)) {
-  //        recent = album;
-  //      }
-  //    }
-  //    if (recent != null) {
-  //      return GalleryAlbum(
-  //          album: recent.album,
-  //          type: recent.type,
-  //          thumbnail: recent.thumbnail,
-  //          dateCategories: recent.dateCategories);
-  //    } else {
-  //      return null;
-  //    }
-  //  } else {
-  //    return null;
-  //  }
-  //}
 
   List<Medium> sortAlbumMediaDates(List<Medium> mediumList) {
     mediumList.sort((a, b) {
@@ -345,7 +332,5 @@ class PhoneGalleryController extends GetxController {
     _media = null;
     _selectedFiles = [];
     _isInitialized = false;
-    Get.delete<PhoneGalleryController>();
-    update();
   }
 }
