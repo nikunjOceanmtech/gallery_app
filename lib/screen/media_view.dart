@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/controller/gallery_controller.dart';
+import 'package:gallery_app/features/image_or_video_show/presentation/view/image_or_video_show_screen.dart';
 import 'package:gallery_app/models/media_file.dart';
-import 'package:gallery_app/screen/image_view_screen.dart';
 import 'package:gallery_app/screen/thumbnail_media_file.dart';
 import 'package:get/get.dart';
 
@@ -25,9 +25,9 @@ class MediaView extends StatelessWidget {
       fit: StackFit.expand,
       children: [
         ThumbnailMediaFile(
-          onTap: () {
+          onTap: () async {
             if (file.thumbnail != null) {
-              Get.to(ImageViewScreen(mediaFile: file));
+              await Get.to(ImageOrVideoShowScreen(mediaFile: file));
             }
           },
           file: file,

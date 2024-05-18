@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/controller/gallery_controller.dart';
+import 'package:gallery_app/global.dart';
 import 'package:gallery_app/models/config.dart';
 import 'package:gallery_app/models/gallery_album.dart';
 import 'package:gallery_app/models/media_file.dart';
+import 'package:gallery_app/screen/album_medias_view.dart';
+import 'package:gallery_app/screen/album_page.dart';
 import 'package:gallery_app/screen/appbars.dart';
 import 'package:gallery_app/screen/album_categories_view.dart';
 import 'package:gallery_app/screen/permission_denied_view.dart';
-import 'package:gallery_app/screen/view_screen.dart';
 import 'package:get/get.dart';
 
 class GalleryPickerView extends StatefulWidget {
@@ -118,23 +120,28 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                         },
                         child: Scaffold(
                           backgroundColor: config.backgroundColor,
-                          appBar: PickerAppBar(
+                          appBar: customAppBar(
                             controller: controller,
-                            isBottomSheet: widget.isBottomSheet,
                             actions: [
-                              Switch(
+                              Text(
+                                "Videos Show :-",
+                                style: TextStyle(
+                                  color: AppColor.blackColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              Checkbox(
                                 value: noPhotoSeleceted,
-                                activeColor: AppColor.primaryColor,
-                                inactiveTrackColor: AppColor.whiteColor,
                                 onChanged: (value) async {
-                                  noPhotoSeleceted = value;
+                                  noPhotoSeleceted = value ?? false;
                                   await galleryController.initializeAlbums(
                                     locale: widget.locale,
                                     isVideo: noPhotoSeleceted,
                                   );
                                   setState(() {});
                                 },
-                              )
+                              ),
                             ],
                           ),
                           body: Column(

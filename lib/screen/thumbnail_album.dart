@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:gallery_app/global.dart';
 import 'package:gallery_app/models/gallery_album.dart';
 import 'package:gallery_app/models/mode.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class ThumbnailAlbum extends StatelessWidget {
   final GalleryAlbum album;
@@ -62,6 +62,11 @@ class ThumbnailAlbum extends StatelessWidget {
           )
         else if (album.thumbnail != null)
           FadeInImage(
+            imageErrorBuilder: (context, error, stackTrace) {
+              return Image.asset(
+                "assets/images/warning.png",
+              );
+            },
             image: MemoryImage(Uint8List.fromList(album.thumbnail!)),
             fadeInDuration: const Duration(milliseconds: 200),
             fit: BoxFit.cover,

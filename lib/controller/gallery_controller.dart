@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -168,16 +167,10 @@ class PhoneGalleryController extends GetxController {
 
   static Future<bool> promptPermissionSetting() async {
     if (Platform.isAndroid) {
-      final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-      final AndroidDeviceInfo info = await deviceInfoPlugin.androidInfo;
-      if (info.version.sdkInt >= 33) {
-        if (await PhoneGalleryController.requestPermission(Permission.photos)) {
-          return await PhoneGalleryController.requestPermission(Permission.videos);
-        } else {
-          return false;
-        }
+      if (await PhoneGalleryController.requestPermission(Permission.photos)) {
+        return await PhoneGalleryController.requestPermission(Permission.videos);
       } else {
-        return await PhoneGalleryController.requestPermission(Permission.storage);
+        return false;
       }
     }
     bool statusStorage = await PhoneGalleryController.requestPermission(Permission.storage);
@@ -231,16 +224,10 @@ class PhoneGalleryController extends GetxController {
 
   Future<bool> isGranted() async {
     if (Platform.isAndroid) {
-      final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-      final AndroidDeviceInfo info = await deviceInfoPlugin.androidInfo;
-      if (info.version.sdkInt >= 33) {
-        if (await Permission.photos.isGranted) {
-          return await Permission.videos.isGranted;
-        } else {
-          return false;
-        }
+      if (await Permission.photos.isGranted) {
+        return await Permission.videos.isGranted;
       } else {
-        return await Permission.storage.isGranted;
+        return false;
       }
     }
     return (await Permission.storage.isGranted) && (await Permission.photos.isGranted);

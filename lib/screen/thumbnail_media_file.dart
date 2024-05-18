@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/controller/gallery_controller.dart';
+import 'package:gallery_app/global.dart';
 import 'package:gallery_app/models/media_file.dart';
-import 'package:transparent_image/transparent_image.dart';
 
 class ThumbnailMediaFile extends StatelessWidget {
   final MediaFile file;
