@@ -25,12 +25,19 @@ class MediaView extends StatelessWidget {
       children: [
         ThumbnailMediaFile(
           onTap: () async {
-            if (file.thumbnail != null) {
-              await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ImageOrVideoShowScreen(mediaFile: file)),
-              );
+            if (controller.selectedFiles.isEmpty) {
+              if (file.thumbnail != null) {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ImageOrVideoShowScreen(mediaFile: file)),
+                );
+              }
+            } else {
+              controller.selectMedia(file);
             }
+          },
+          onLongPress: () {
+            controller.selectMedia(file);
           },
           file: file,
           failIconColor: controller.config.appbarIconColor,
