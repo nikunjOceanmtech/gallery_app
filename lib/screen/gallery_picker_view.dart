@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/controller/gallery_controller.dart';
+import 'package:gallery_app/global.dart';
 import 'package:gallery_app/models/config.dart';
 import 'package:gallery_app/models/gallery_album.dart';
 import 'package:gallery_app/models/media_file.dart';
 import 'package:gallery_app/screen/appbars.dart';
 import 'package:gallery_app/screen/album_categories_view.dart';
 import 'package:gallery_app/screen/permission_denied_view.dart';
-import 'package:gallery_app/screen/view_screen.dart';
 import 'package:get/get.dart';
 
 class GalleryPickerView extends StatefulWidget {

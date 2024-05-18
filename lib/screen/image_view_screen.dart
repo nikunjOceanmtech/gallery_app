@@ -53,6 +53,12 @@ class _ImageViewScreenState extends State<ImageViewScreen> {
                   ? Image(
                       height: MediaQuery.of(context).size.height,
                       width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Image.asset(
+                          "assets/images/warning.png",
+                        );
+                      },
                       image: MemoryImage(widget.mediaFile.thumbnail!),
                     )
                   : videoPlayerController != null
