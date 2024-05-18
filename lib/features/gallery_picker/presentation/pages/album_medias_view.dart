@@ -50,9 +50,10 @@ class AlbumMediasView extends StatelessWidget {
       } else {
         return [
           DateCategory(
-              files: controller.extraRecentMedia!,
-              dateTime: controller.extraRecentMedia!.first.lastModified ?? DateTime.now(),
-              name: controller.config.recent),
+            files: controller.extraRecentMedia!,
+            dateTime: controller.extraRecentMedia!.first.lastModified ?? DateTime.now(),
+            name: controller.config.recent,
+          ),
           ...categoriesTmp
         ];
       }
