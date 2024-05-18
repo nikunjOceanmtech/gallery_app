@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 final Uint8List kTransparentImage = Uint8List.fromList(
@@ -75,4 +76,13 @@ final Uint8List kTransparentImage = Uint8List.fromList(
 class AppColor {
   static Color primaryColor = const Color(0xff084277);
   static Color whiteColor = const Color(0xffffffff);
+  static Color blackColor = const Color(0xff000000);
+}
+
+Widget commonLoadingBar() {
+  return CircularProgressIndicator(
+    color: AppColor.whiteColor,
+    strokeWidth: 3,
+    backgroundColor: AppColor.primaryColor,
+  );
 }
