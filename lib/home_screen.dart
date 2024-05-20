@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/pages/gallery_picker_view.dart';
 import 'package:gallery_app/features/image_or_video_show/presentation/view/image_or_video_show_screen.dart';
 import 'package:gallery_app/global.dart';
-
-import 'features/gallery_picker/presentation/pages/gallery_picker_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,10 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 },
-                child: Image.memory(
-                  selectedMediaList[index].thumbnail!,
-                  fit: BoxFit.cover,
-                ),
+                child: Image.memory(selectedMediaList[index].thumbnail!),
               );
             }
             return const SizedBox();
@@ -55,63 +51,38 @@ class _HomeScreenState extends State<HomeScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return GalleryPickerView(
-                    pickType: PickType.onlyImage,
-                    onSelect: (selectedMedia) {
-                      selectedMediaList.addAll(selectedMedia);
-                      setState(() {});
-                    },
-                  );
-                },
-              ),
-            );
-          },
+          onPressed: () async => await pickMedia(pickType: PickType.onlyImage),
           child: const Text("Only Image"),
         ),
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return GalleryPickerView(
-                    pickType: PickType.onlyVideo,
-                    onSelect: (selectedMedia) {
-                      selectedMediaList = selectedMedia;
-                      setState(() {});
-                    },
-                  );
-                },
-              ),
-            );
-          },
+          onPressed: () async => await pickMedia(pickType: PickType.onlyVideo),
           child: const Text("Only Video"),
         ),
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return GalleryPickerView(
-                    pickType: PickType.imageOrVideo,
-                    onSelect: (selectedMedia) {
-                      selectedMediaList = selectedMedia;
-                      setState(() {});
-                    },
-                  );
-                },
-              ),
-            );
-          },
+          onPressed: () async => await pickMedia(pickType: PickType.imageOrVideo),
           child: const Text("Image Or Video"),
         ),
       ],
     );
+  }
+
+  Future<void> pickMedia({required PickType pickType}) async {
+    List<MediaFile>? data = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return GalleryPickerView(
+            pickType: pickType,
+            startWithRecent: true,
+            initSelectedMedia: selectedMediaList,
+          );
+        },
+      ),
+    );
+    if (data != null) {
+      selectedMediaList.clear();
+      selectedMediaList.addAll(data.toSet().toList());
+      setState(() {});
+    }
   }
 }

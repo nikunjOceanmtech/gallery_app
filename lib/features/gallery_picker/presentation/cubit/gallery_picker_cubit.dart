@@ -39,12 +39,6 @@ class GalleryPickerCubit extends Cubit<double> {
   late PageController pickerPageController;
   GalleryAlbum? selectedAlbum;
   late Config config;
-  bool isLoadingData = false;
-
-  void loadingData({required bool isLoading}) {
-    isLoadingData = isLoading;
-    emit(Random().nextDouble());
-  }
 
   void configuration(
     Config? config, {
@@ -272,7 +266,7 @@ class GalleryPickerCubit extends Cubit<double> {
                   } catch (e) {
                     entireGalleryAlbum.thumbnail = null;
                     if (kDebugMode) {
-                      print(e);
+                      print("=========$e");
                     }
                   }
                 }

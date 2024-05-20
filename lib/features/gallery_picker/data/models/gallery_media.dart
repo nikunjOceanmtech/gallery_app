@@ -13,7 +13,7 @@ class GalleryMedia {
       return albums.singleWhere((element) => element.name == name);
     } catch (e) {
       if (kDebugMode) {
-        print(e);
+        print("===========$e");
       }
       return null;
     }

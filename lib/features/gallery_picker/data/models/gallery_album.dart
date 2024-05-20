@@ -65,7 +65,7 @@ class GalleryAlbum {
       thumbnail = await album.getThumbnail(highQuality: true);
     } catch (e) {
       if (kDebugMode) {
-        print(e);
+        print("===========$e");
       }
     }
   }

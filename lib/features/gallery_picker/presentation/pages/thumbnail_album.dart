@@ -38,8 +38,7 @@ class ThumbnailAlbum extends StatelessWidget {
   Color lighten(Color color, [double amount = .05]) {
     assert(amount >= 0 && amount <= 1);
     final hsl = HSLColor.fromColor(color);
-    final hslLight =
-        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+    final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
     return hslLight.toColor();
   }
 
@@ -91,11 +90,7 @@ class ThumbnailAlbum extends StatelessWidget {
               album.name ?? "Unnamed Album",
               maxLines: 1,
               textAlign: TextAlign.start,
-              style: const TextStyle(
-                color: Colors.white,
-                height: 1.2,
-                fontSize: 12,
-              ),
+              style: const TextStyle(color: Colors.white, height: 1.2, fontSize: 12),
             ),
           ),
         ),
@@ -108,11 +103,7 @@ class ThumbnailAlbum extends StatelessWidget {
             child: Text(
               album.count.toString(),
               textAlign: TextAlign.start,
-              style: const TextStyle(
-                color: Colors.white,
-                height: 1.2,
-                fontSize: 12,
-              ),
+              style: const TextStyle(color: Colors.white, height: 1.2, fontSize: 12),
             ),
           ),
         ),

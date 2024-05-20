@@ -1,6 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/config.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/pages/album_data_view.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/pages/thumbnail_album.dart';
 import 'package:gallery_app/global.dart';
 
@@ -28,17 +31,26 @@ class AlbumCategoriesView extends StatelessWidget {
             : LayoutBuilder(
                 builder: (context, constraints) {
                   return GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                     ),
                     itemCount: controller.galleryAlbums.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
-                        onTap: () => controller.changeAlbum(
-                          album: controller.galleryAlbums[index],
-                          context: context,
-                        ),
+                        onTap: () async {
+                          var data = await await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AlbumDataView(
+                                album: controller.galleryAlbums[index],
+                              ),
+                            ),
+                          );
+
+                          if (data != null) {
+                            Navigator.pop(context, data);
+                          }
+                        },
                         child: Stack(
                           fit: StackFit.passthrough,
                           children: [

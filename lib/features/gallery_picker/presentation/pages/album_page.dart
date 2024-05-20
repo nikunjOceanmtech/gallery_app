@@ -29,10 +29,19 @@ class AlbumPage extends StatelessWidget {
         backgroundColor: controller.config.backgroundColor,
         appBar: album != null
             ? customAppBar(
+                isTitleShow: true,
                 context: context,
                 isLeadingIcon: true,
                 album: album!,
                 controller: controller,
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.pop(context, controller.selectedFiles);
+                    },
+                    icon: const Icon(Icons.check, size: 30),
+                  )
+                ],
               )
             : null,
         body: album != null

@@ -21,17 +21,6 @@ class AlbumMediasView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // ListView(
-        //   children: [
-        //     for (var category in checkCategories(galleryAlbum.dateCategories))
-        //       DateCategoryView(
-        //         category: category,
-        //         controller: controller,
-        //         singleMedia: singleMedia,
-        //         isBottomSheet: isBottomSheet,
-        //       ),
-        //   ],
-        // ),
         ListView.builder(
           itemCount: checkCategories(galleryAlbum.dateCategories).length,
           itemBuilder: (context, index) {
