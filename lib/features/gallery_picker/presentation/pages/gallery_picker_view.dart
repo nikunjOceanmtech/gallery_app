@@ -56,7 +56,11 @@ class _GalleryPickerState extends State<GalleryPickerView> {
 
   @override
   void initState() {
-    galleryPickerCubit.loadingData(isLoading: true);
+    getData();
+    super.initState();
+  }
+
+  Future<void> getData() async {
     galleryPickerCubit.updateConfig(widget.config);
     galleryPickerCubit.configuration(
       galleryPickerCubit.config,
@@ -66,17 +70,15 @@ class _GalleryPickerState extends State<GalleryPickerView> {
       multipleMediasBuilder: widget.multipleMediaBuilder,
       initSelectedMedias: widget.initSelectedMedia,
       extraRecentMedia: widget.extraRecentMedia,
-      isRecent: widget.startWithRecent,
+      isRecent: true,
     );
     config = galleryPickerCubit.config;
     if (!galleryPickerCubit.isInitialized) {
-      galleryPickerCubit.initializeAlbums(
+      await galleryPickerCubit.initializeAlbums(
         locale: widget.locale,
         pickType: widget.pickType,
       );
     }
-    galleryPickerCubit.loadingData(isLoading: false);
-    super.initState();
   }
 
   @override
@@ -148,7 +150,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                       body: Column(
                         children: [
                           tabBarView(width: width),
-                          galleryPickerCubit.isLoadingData ? Expanded(child: commonLoadingBar()) : screenView(),
+                          !galleryPickerCubit.isInitialized ? Expanded(child: commonLoadingBar()) : screenView(),
                         ],
                       ),
                     ),

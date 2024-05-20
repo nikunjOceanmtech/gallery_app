@@ -36,11 +36,7 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider<GalleryPickerCubit>.value(value: _galleryPickerCubit),
       ],
-      child: const SafeArea(
-        child: MaterialApp(
-          home: HomeScreen(),
-        ),
-      ),
+      child: const SafeArea(child: MaterialApp(home: HomeScreen())),
     );
   }
 }

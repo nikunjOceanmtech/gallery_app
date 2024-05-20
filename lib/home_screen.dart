@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/pages/gallery_picker_view.dart';
 import 'package:gallery_app/features/image_or_video_show/presentation/view/image_or_video_show_screen.dart';
 import 'package:gallery_app/global.dart';
-
-import 'features/gallery_picker/presentation/pages/gallery_picker_view.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -36,10 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 },
-                child: Image.memory(
-                  selectedMediaList[index].thumbnail!,
-                  fit: BoxFit.cover,
-                ),
+                child: Image.memory(selectedMediaList[index].thumbnail!),
               );
             }
             return const SizedBox();
@@ -61,9 +57,12 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialPageRoute(
                 builder: (context) {
                   return GalleryPickerView(
+                    startWithRecent: true,
+                    initSelectedMedia: selectedMediaList,
                     pickType: PickType.onlyImage,
                     onSelect: (selectedMedia) {
-                      selectedMediaList.addAll(selectedMedia);
+                      selectedMediaList.clear();
+                      selectedMediaList.addAll(selectedMedia.toSet().toList());
                       setState(() {});
                     },
                   );
@@ -80,9 +79,12 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialPageRoute(
                 builder: (context) {
                   return GalleryPickerView(
+                    initSelectedMedia: selectedMediaList,
                     pickType: PickType.onlyVideo,
+                    startWithRecent: true,
                     onSelect: (selectedMedia) {
-                      selectedMediaList = selectedMedia;
+                      selectedMediaList.clear();
+                      selectedMediaList.addAll(selectedMedia.toSet().toList());
                       setState(() {});
                     },
                   );
@@ -99,9 +101,12 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialPageRoute(
                 builder: (context) {
                   return GalleryPickerView(
+                    initSelectedMedia: selectedMediaList,
                     pickType: PickType.imageOrVideo,
-                    onSelect: (selectedMedia) {
-                      selectedMediaList = selectedMedia;
+                    startWithRecent: true,
+                    onSelect: (List<MediaFile> selectedMedia) {
+                      selectedMediaList.clear();
+                      selectedMediaList.addAll(selectedMedia.toSet().toList());
                       setState(() {});
                     },
                   );
