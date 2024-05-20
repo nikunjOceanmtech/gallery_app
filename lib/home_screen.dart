@@ -56,13 +56,16 @@ class _HomeScreenState extends State<HomeScreen> {
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return const GalleryPickerView(
+                  return GalleryPickerView(
+                    initSelectedMedia: selectedMediaList,
                     pickType: PickType.onlyImage,
                     startWithRecent: true,
+                    isBottomSheet: true,
                   );
                 },
               ),
             );
+
             if (data != null) {
               selectedMediaList.clear();
               selectedMediaList.addAll(data.toSet().toList());
