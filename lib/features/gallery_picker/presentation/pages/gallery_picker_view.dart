@@ -13,7 +13,6 @@ import 'package:gallery_app/global.dart';
 
 class GalleryPickerView extends StatefulWidget {
   final Config? config;
-  final Function(List<MediaFile> selectedMedia) onSelect;
   final bool startWithRecent;
   final bool isBottomSheet;
   final Locale? locale;
@@ -35,7 +34,6 @@ class GalleryPickerView extends StatefulWidget {
     required this.pickType,
     super.key,
     this.config,
-    required this.onSelect,
     this.initSelectedMedia,
     this.extraRecentMedia,
     this.singleMedia = false,
@@ -63,8 +61,8 @@ class _GalleryPickerState extends State<GalleryPickerView> {
   Future<void> getData() async {
     galleryPickerCubit.updateConfig(widget.config);
     galleryPickerCubit.configuration(
+      onSelect: (value) {},
       galleryPickerCubit.config,
-      onSelect: widget.onSelect,
       startWithRecent: widget.startWithRecent,
       heroBuilder: widget.heroBuilder,
       multipleMediasBuilder: widget.multipleMediaBuilder,
@@ -117,8 +115,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                             ? [
                                 IconButton(
                                   onPressed: () {
-                                    widget.onSelect(galleryPickerCubit.selectedFiles);
-                                    Navigator.pop(context);
+                                    Navigator.pop(context, galleryPickerCubit.selectedFiles);
                                   },
                                   icon: const Icon(Icons.check, size: 30),
                                 )

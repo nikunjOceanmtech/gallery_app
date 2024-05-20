@@ -51,68 +51,66 @@ class _HomeScreenState extends State<HomeScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            List<MediaFile>? data = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return GalleryPickerView(
-                    startWithRecent: true,
-                    initSelectedMedia: selectedMediaList,
+                  return const GalleryPickerView(
                     pickType: PickType.onlyImage,
-                    onSelect: (selectedMedia) {
-                      selectedMediaList.clear();
-                      selectedMediaList.addAll(selectedMedia.toSet().toList());
-                      setState(() {});
-                    },
+                    startWithRecent: true,
                   );
                 },
               ),
             );
+            if (data != null) {
+              selectedMediaList.clear();
+              selectedMediaList.addAll(data.toSet().toList());
+              setState(() {});
+            }
           },
           child: const Text("Only Image"),
         ),
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            List<MediaFile>? data = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) {
-                  return GalleryPickerView(
-                    initSelectedMedia: selectedMediaList,
+                  return const GalleryPickerView(
                     pickType: PickType.onlyVideo,
                     startWithRecent: true,
-                    onSelect: (selectedMedia) {
-                      selectedMediaList.clear();
-                      selectedMediaList.addAll(selectedMedia.toSet().toList());
-                      setState(() {});
-                    },
                   );
                 },
               ),
             );
+            if (data != null) {
+              selectedMediaList.clear();
+              selectedMediaList.addAll(data.toSet().toList());
+              setState(() {});
+            }
           },
           child: const Text("Only Video"),
         ),
         ElevatedButton(
-          onPressed: () {
-            Navigator.push(
+          onPressed: () async {
+            List<MediaFile>? data = await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) {
                   return GalleryPickerView(
-                    initSelectedMedia: selectedMediaList,
                     pickType: PickType.imageOrVideo,
                     startWithRecent: true,
-                    onSelect: (List<MediaFile> selectedMedia) {
-                      selectedMediaList.clear();
-                      selectedMediaList.addAll(selectedMedia.toSet().toList());
-                      setState(() {});
-                    },
+                    initSelectedMedia: selectedMediaList,
                   );
                 },
               ),
             );
+            if (data != null) {
+              selectedMediaList.clear();
+              selectedMediaList.addAll(data.toSet().toList());
+              setState(() {});
+            }
           },
           child: const Text("Image Or Video"),
         ),
