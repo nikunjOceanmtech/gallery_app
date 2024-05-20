@@ -5,6 +5,5 @@ import 'package:gallery_app/gallery_app.dart';
 
 void main() {
   unawaited(get_it.init());
-
   runApp(const MyApp());
 }
