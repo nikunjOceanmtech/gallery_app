@@ -54,9 +54,10 @@ class ThumbnailMediaFile extends StatelessWidget {
             width: width,
             height: height,
             decoration: BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.circular(radius),
-                border: Border.all(color: borderColor, width: borderWidth)),
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(radius),
+              border: Border.all(color: borderColor, width: borderWidth),
+            ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(radius),
               child: Stack(
@@ -92,10 +93,7 @@ class ThumbnailMediaFile extends StatelessWidget {
                       image: MemoryImage(file.thumbnail!),
                     )
                   else
-                    SizedBox(
-                      width: width,
-                      height: height,
-                    ),
+                    SizedBox(width: width, height: height),
                   if (!noIcon && file.thumbnail != null)
                     Positioned(
                       bottom: 10,
@@ -106,16 +104,12 @@ class ThumbnailMediaFile extends StatelessWidget {
                         size: 20,
                       ),
                     ),
-                  if (!noSelectedIcon && controller.isSelectedMedia(file: file))
+                  if (controller.isSelectedMedia(file: file))
                     Opacity(
                       opacity: 0.5,
                       child: Container(
                         color: Colors.black,
-                        child: const Icon(
-                          Icons.check,
-                          color: Colors.white,
-                          size: 45,
-                        ),
+                        child: const Icon(Icons.check, color: Colors.white, size: 45),
                       ),
                     ),
                 ],

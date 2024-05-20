@@ -266,7 +266,7 @@ class GalleryPickerCubit extends Cubit<double> {
                   } catch (e) {
                     entireGalleryAlbum.thumbnail = null;
                     if (kDebugMode) {
-                      print(e);
+                      print("=========$e");
                     }
                   }
                 }

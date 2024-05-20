@@ -51,73 +51,38 @@ class _HomeScreenState extends State<HomeScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         ElevatedButton(
-          onPressed: () async {
-            List<MediaFile>? data = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return GalleryPickerView(
-                    initSelectedMedia: selectedMediaList,
-                    pickType: PickType.onlyImage,
-                    startWithRecent: true,
-                    isBottomSheet: true,
-                  );
-                },
-              ),
-            );
-
-            if (data != null) {
-              selectedMediaList.clear();
-              selectedMediaList.addAll(data.toSet().toList());
-              setState(() {});
-            }
-          },
+          onPressed: () async => await pickMedia(pickType: PickType.onlyImage),
           child: const Text("Only Image"),
         ),
         ElevatedButton(
-          onPressed: () async {
-            List<MediaFile>? data = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return const GalleryPickerView(
-                    pickType: PickType.onlyVideo,
-                    startWithRecent: true,
-                  );
-                },
-              ),
-            );
-            if (data != null) {
-              selectedMediaList.clear();
-              selectedMediaList.addAll(data.toSet().toList());
-              setState(() {});
-            }
-          },
+          onPressed: () async => await pickMedia(pickType: PickType.onlyVideo),
           child: const Text("Only Video"),
         ),
         ElevatedButton(
-          onPressed: () async {
-            List<MediaFile>? data = await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) {
-                  return GalleryPickerView(
-                    pickType: PickType.imageOrVideo,
-                    startWithRecent: true,
-                    initSelectedMedia: selectedMediaList,
-                  );
-                },
-              ),
-            );
-            if (data != null) {
-              selectedMediaList.clear();
-              selectedMediaList.addAll(data.toSet().toList());
-              setState(() {});
-            }
-          },
+          onPressed: () async => await pickMedia(pickType: PickType.imageOrVideo),
           child: const Text("Image Or Video"),
         ),
       ],
     );
+  }
+
+  Future<void> pickMedia({required PickType pickType}) async {
+    List<MediaFile>? data = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) {
+          return GalleryPickerView(
+            pickType: pickType,
+            startWithRecent: true,
+            initSelectedMedia: selectedMediaList,
+          );
+        },
+      ),
+    );
+    if (data != null) {
+      selectedMediaList.clear();
+      selectedMediaList.addAll(data.toSet().toList());
+      setState(() {});
+    }
   }
 }

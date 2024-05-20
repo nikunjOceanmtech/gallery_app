@@ -38,7 +38,9 @@ AppBar customAppBar({
 }
 
 String getTitle({GalleryAlbum? album, GalleryPickerCubit? controller}) {
-  if (!(controller?.pickerMode ?? false) && (controller?.selectedFiles.isEmpty ?? false)) {
+  if (album != null) {
+    return "${album.name}";
+  } else if (!(controller?.pickerMode ?? false) && (controller?.selectedFiles.isEmpty ?? false)) {
     return "${album?.name}";
   } else if ((controller?.pickerMode ?? false) && (controller?.selectedFiles.isEmpty ?? false)) {
     return controller?.config.tapPhotoSelect ?? "";

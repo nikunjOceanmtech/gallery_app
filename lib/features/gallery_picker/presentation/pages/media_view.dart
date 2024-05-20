@@ -36,15 +36,6 @@ class MediaView extends StatelessWidget {
                   ),
                 );
                 controller.switchPickerMode(value: true);
-              } else if (controller.multipleMediasBuilder != null) {
-                await Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) {
-                      return controller.multipleMediasBuilder!([file], context);
-                    },
-                  ),
-                );
-                controller.switchPickerMode(value: true);
               } else {
                 controller.onSelect(controller.selectedFiles);
                 if (isBottomSheet) {

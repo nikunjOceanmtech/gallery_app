@@ -5,15 +5,13 @@ import 'mode.dart';
 class Config {
   late Widget selectIcon;
   Widget? permissionDeniedPage;
-  late Color backgroundColor, appbarColor, appbarIconColor, underlineColor, bottomSheetColor;
+  late Color backgroundColor, appbarIconColor, underlineColor;
   late TextStyle textStyle, appbarTextStyle, selectedMenuStyle, unselectedMenuStyle;
   String recents, recent, gallery, lastMonth, lastWeek, tapPhotoSelect, selected;
   Mode mode;
 
   Config({
     Color? backgroundColor,
-    Color? appbarColor,
-    Color? bottomSheetColor,
     Color? appbarIconColor,
     Color? underlineColor,
     TextStyle? selectedMenuStyle,
@@ -21,9 +19,9 @@ class Config {
     TextStyle? textStyle,
     TextStyle? appbarTextStyle,
     this.permissionDeniedPage,
-    this.recents = "RECENTS",
+    this.recents = "Recents",
     this.recent = "Recent",
-    this.gallery = "GALLERY",
+    this.gallery = "Gallery",
     this.lastMonth = "Last Month",
     this.lastWeek = "Last Week",
     this.tapPhotoSelect = "Tap photo to select",
@@ -33,13 +31,6 @@ class Config {
   }) {
     if (backgroundColor == null) {
       this.backgroundColor = mode == Mode.dark ? const Color.fromARGB(255, 18, 27, 34) : Colors.white;
-    }
-    if (appbarColor == null) {
-      this.appbarColor = mode == Mode.dark ? const Color.fromARGB(255, 31, 44, 52) : Colors.white;
-    }
-    if (bottomSheetColor == null) {
-      this.bottomSheetColor =
-          mode == Mode.dark ? const Color.fromARGB(255, 31, 44, 52) : const Color.fromARGB(255, 247, 248, 250);
     }
     if (appbarIconColor == null) {
       this.appbarIconColor = mode == Mode.dark ? Colors.white : const Color.fromARGB(255, 130, 141, 148);
