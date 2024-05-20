@@ -1,9 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/mode.dart';
 import 'package:gallery_app/global.dart';
-import 'package:gallery_app/models/gallery_album.dart';
-import 'package:gallery_app/models/mode.dart';
 
 class ThumbnailAlbum extends StatelessWidget {
   final GalleryAlbum album;
@@ -38,7 +38,8 @@ class ThumbnailAlbum extends StatelessWidget {
   Color lighten(Color color, [double amount = .05]) {
     assert(amount >= 0 && amount <= 1);
     final hsl = HSLColor.fromColor(color);
-    final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
+    final hslLight =
+        hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
     return hslLight.toColor();
   }
 
@@ -74,20 +75,11 @@ class ThumbnailAlbum extends StatelessWidget {
           )
         else
           const SizedBox(),
-        Opacity(
-          opacity: 0.5,
-          child: Container(
-            color: Colors.black,
-          ),
-        ),
+        Opacity(opacity: 0.5, child: Container(color: Colors.black)),
         Positioned(
           bottom: 5,
           left: 5,
-          child: Icon(
-            album.icon,
-            color: Colors.white,
-            size: 16,
-          ),
+          child: Icon(album.icon, color: Colors.white, size: 16),
         ),
         Positioned(
           left: 25,

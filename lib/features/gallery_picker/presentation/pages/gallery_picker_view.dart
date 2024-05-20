@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/config.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/pages/album_categories_view.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/pages/album_medias_view.dart';
@@ -7,9 +10,6 @@ import 'package:gallery_app/features/gallery_picker/presentation/pages/album_pag
 import 'package:gallery_app/features/gallery_picker/presentation/pages/appbars.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/pages/permission_denied_view.dart';
 import 'package:gallery_app/global.dart';
-import 'package:gallery_app/models/config.dart';
-import 'package:gallery_app/models/gallery_album.dart';
-import 'package:gallery_app/models/media_file.dart';
 
 class GalleryPickerView extends StatefulWidget {
   final Config? config;
@@ -54,6 +54,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
 
   @override
   void initState() {
+    galleryPickerCubit.loadingData(isLoading: true);
     galleryPickerCubit.updateConfig(widget.config);
     galleryPickerCubit.configuration(
       galleryPickerCubit.config,
@@ -70,6 +71,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
     if (!galleryPickerCubit.isInitialized) {
       galleryPickerCubit.initializeAlbums(locale: widget.locale, isVideo: false);
     }
+    galleryPickerCubit.loadingData(isLoading: false);
     super.initState();
   }
 
@@ -103,31 +105,45 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                       appBar: customAppBar(
                         context: context,
                         controller: galleryPickerCubit,
-                        actions: [
-                          Text(
-                            "Videos Show :-",
-                            style: TextStyle(
-                              color: AppColor.blackColor,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                          Checkbox(
-                            value: noPhotoSeleceted,
-                            onChanged: (value) async {
-                              noPhotoSeleceted = value ?? false;
-                              await galleryPickerCubit.initializeAlbums(
-                                locale: widget.locale,
-                                isVideo: noPhotoSeleceted,
-                              );
-                            },
-                          ),
-                        ],
+                        isBack: true,
+                        isLeadingIcon: true,
+                        actions: galleryPickerCubit.selectedFiles.isNotEmpty
+                            ? [
+                                IconButton(
+                                  onPressed: () {
+                                    widget.onSelect(galleryPickerCubit.selectedFiles);
+                                    Navigator.pop(context);
+                                  },
+                                  icon: const Icon(Icons.check, size: 30),
+                                )
+                              ]
+                            : [
+                                Text(
+                                  "Videos Show :-",
+                                  style: TextStyle(
+                                    color: AppColor.blackColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                galleryPickerCubit.selectedFiles.isNotEmpty
+                                    ? const SizedBox()
+                                    : Checkbox(
+                                        value: noPhotoSeleceted,
+                                        onChanged: (value) async {
+                                          noPhotoSeleceted = value ?? false;
+                                          await galleryPickerCubit.initializeAlbums(
+                                            locale: widget.locale,
+                                            isVideo: noPhotoSeleceted,
+                                          );
+                                        },
+                                      ),
+                              ],
                       ),
                       body: Column(
                         children: [
                           tabBarView(width: width),
-                          screenView(),
+                          galleryPickerCubit.isLoadingData ? Expanded(child: commonLoadingBar()) : screenView(),
                         ],
                       ),
                     ),
@@ -149,13 +165,13 @@ class _GalleryPickerState extends State<GalleryPickerView> {
     return Expanded(
       child: PageView(
         controller: galleryPickerCubit.pickerPageController,
-        onPageChanged: (value) {
-          if (value == 0) {
+        onPageChanged: (index) {
+          if (index == 0) {
             galleryPickerCubit.isRecent = true;
-            galleryPickerCubit.switchPickerMode(false);
+            galleryPickerCubit.switchPickerMode(value: false);
           } else {
             galleryPickerCubit.isRecent = false;
-            galleryPickerCubit.switchPickerMode(false);
+            galleryPickerCubit.switchPickerMode(value: false);
           }
         },
         scrollDirection: Axis.horizontal,
@@ -165,6 +181,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
             controller: galleryPickerCubit,
             isBottomSheet: widget.isBottomSheet,
             singleMedia: widget.singleMedia,
+            text: noPhotoSeleceted ? "Video Data Not Foound" : "Image Data Not Foound",
           ),
         ],
       ),
@@ -173,19 +190,17 @@ class _GalleryPickerState extends State<GalleryPickerView> {
 
   Widget imagesView() {
     return galleryPickerCubit.isInitialized && galleryPickerCubit.recent != null
-        ? 1 != 1
-            ? const SizedBox.shrink()
+        ? galleryPickerCubit.recent!.dateCategories.isEmpty
+            ? dataNotFound(
+                text: noPhotoSeleceted ? "Video Data Not Foound" : "Image Data Not Foound",
+              )
             : AlbumMediasView(
                 galleryAlbum: galleryPickerCubit.recent!,
                 controller: galleryPickerCubit,
                 isBottomSheet: widget.isBottomSheet,
                 singleMedia: widget.singleMedia,
               )
-        : const Center(
-            child: CircularProgressIndicator(
-              color: Colors.grey,
-            ),
-          );
+        : commonLoadingBar();
   }
 
   Widget tabBarView({required double width}) {
@@ -220,7 +235,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                 );
                 setState(() {
                   galleryPickerCubit.isRecent = true;
-                  galleryPickerCubit.switchPickerMode(false);
+                  galleryPickerCubit.switchPickerMode(value: false);
                 });
               },
               child: Text(
@@ -250,7 +265,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                   curve: Curves.easeIn,
                 );
                 galleryPickerCubit.isRecent = false;
-                galleryPickerCubit.switchPickerMode(false);
+                galleryPickerCubit.switchPickerMode(value: false);
               },
               child: Text(
                 config.gallery,

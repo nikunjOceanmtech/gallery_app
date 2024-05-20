@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/pages/date_category_view.dart';
-import 'package:gallery_app/models/gallery_album.dart';
 
 class AlbumMediasView extends StatelessWidget {
   final GalleryPickerCubit controller;
@@ -21,17 +21,28 @@ class AlbumMediasView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        ListView(
-          children: [
-            for (var category in checkCategories(galleryAlbum.dateCategories))
-              DateCategoryView(
-                category: category,
-                controller: controller,
-                singleMedia: singleMedia,
-                isBottomSheet: isBottomSheet,
-              ),
-          ],
-        ),
+        // ListView(
+        //   children: [
+        //     for (var category in checkCategories(galleryAlbum.dateCategories))
+        //       DateCategoryView(
+        //         category: category,
+        //         controller: controller,
+        //         singleMedia: singleMedia,
+        //         isBottomSheet: isBottomSheet,
+        //       ),
+        //   ],
+        // ),
+        ListView.builder(
+          itemCount: checkCategories(galleryAlbum.dateCategories).length,
+          itemBuilder: (context, index) {
+            return DateCategoryView(
+              category: checkCategories(galleryAlbum.dateCategories)[index],
+              controller: controller,
+              isBottomSheet: isBottomSheet,
+              singleMedia: singleMedia,
+            );
+          },
+        )
       ],
     );
   }

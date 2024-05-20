@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/global.dart';
-import 'package:gallery_app/models/media_file.dart';
 
 class ThumbnailMediaFile extends StatelessWidget {
   final MediaFile file;
@@ -106,7 +106,7 @@ class ThumbnailMediaFile extends StatelessWidget {
                         size: 20,
                       ),
                     ),
-                  if (!noSelectedIcon && controller.isSelectedMedia(file))
+                  if (!noSelectedIcon && controller.isSelectedMedia(file: file))
                     Opacity(
                       opacity: 0.5,
                       child: Container(

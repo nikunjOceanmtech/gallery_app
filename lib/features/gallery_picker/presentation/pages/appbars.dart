@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/global.dart';
-import 'package:gallery_app/models/gallery_album.dart';
 
 AppBar customAppBar({
   required BuildContext context,
@@ -10,6 +10,7 @@ AppBar customAppBar({
   List<Widget>? actions,
   bool isLeadingIcon = false,
   bool isBack = false,
+  bool isTitleShow = false,
   Color? leadingIconColor,
   Color? backgroundColor,
   Color? textColor,
@@ -25,7 +26,7 @@ AppBar customAppBar({
           )
         : const SizedBox.shrink(),
     title: Text(
-      isLeadingIcon ? getTitle(album: album, controller: controller) : "Gallery",
+      isTitleShow ? getTitle(album: album, controller: controller) : "Gallery",
       style: TextStyle(
         color: textColor ?? AppColor.blackColor,
         fontWeight: FontWeight.bold,

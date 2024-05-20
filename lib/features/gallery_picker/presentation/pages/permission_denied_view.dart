@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gallery_app/models/config.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/config.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionDeniedView extends StatelessWidget {

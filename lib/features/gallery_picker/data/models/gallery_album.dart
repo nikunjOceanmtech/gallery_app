@@ -2,13 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/medium.dart';
 import 'package:gallery_app/global.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 
-import '/models/media_file.dart';
-import '/models/medium.dart';
 import 'config.dart';
 
 class GalleryAlbum {
