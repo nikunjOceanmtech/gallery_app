@@ -10,6 +10,7 @@ import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.da
 import 'package:gallery_app/features/gallery_picker/data/models/gallery_media.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/medium.dart';
+import 'package:gallery_app/global.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
 
@@ -54,7 +55,6 @@ class GalleryPickerCubit extends Cubit<double> {
     required List<MediaFile>? initSelectedMedias,
     required List<MediaFile>? extraRecentMedia,
     required Widget Function(List<MediaFile>, BuildContext)? multipleMediasBuilder,
-    bool isVideo = false,
   }) {
     this.onSelect = onSelect;
     this.heroBuilder = heroBuilder;
@@ -193,8 +193,8 @@ class GalleryPickerCubit extends Cubit<double> {
     return false;
   }
 
-  Future<void> initializeAlbums({Locale? locale, bool isVideo = false}) async {
-    _media = await collectGallery(locale: locale, isVideo: isVideo);
+  Future<void> initializeAlbums({Locale? locale, bool isVideo = false, required PickType pickType}) async {
+    _media = await collectGallery(locale: locale, pickType: pickType);
 
     if (_media != null) {
       if (_extraRecentMedia != null) {
@@ -208,17 +208,17 @@ class GalleryPickerCubit extends Cubit<double> {
       emit(Random().nextDouble());
     } else {
       permissionGranted = false;
-      permissionListener(locale: locale);
+      permissionListener(locale: locale, pickType: pickType);
       emit(Random().nextDouble());
     }
   }
 
-  void permissionListener({Locale? locale}) {
+  void permissionListener({Locale? locale, required PickType pickType}) {
     Timer.periodic(
       const Duration(seconds: 1),
       (Timer timer) async {
         if (await isGranted()) {
-          await initializeAlbums(locale: locale, isVideo: true);
+          await initializeAlbums(locale: locale, isVideo: true, pickType: pickType);
           timer.cancel();
         }
       },
@@ -237,31 +237,31 @@ class GalleryPickerCubit extends Cubit<double> {
     return (await Permission.storage.isGranted) && (await Permission.photos.isGranted);
   }
 
-  static Future<GalleryMedia?> collectGallery({Locale? locale, bool isVideo = false}) async {
+  static Future<GalleryMedia?> collectGallery({Locale? locale, required PickType pickType}) async {
     if (await promptPermissionSetting()) {
       List<GalleryAlbum> tempGalleryAlbums = [];
 
       List<Album> photoAlbums = await PhotoGallery.listAlbums(mediumType: MediumType.image);
       List<Album> videoAlbums = await PhotoGallery.listAlbums(mediumType: MediumType.video);
-      if (!isVideo) {
+
+      if (pickType == PickType.onlyImage || pickType == PickType.imageOrVideo) {
         for (var photoAlbum in photoAlbums) {
           GalleryAlbum entireGalleryAlbum = GalleryAlbum.album(photoAlbum);
           await entireGalleryAlbum.initialize(locale: locale);
           entireGalleryAlbum.setType = AlbumType.image;
-          if (isVideo) {
+          if (pickType == PickType.onlyVideo || pickType == PickType.imageOrVideo) {
             if (videoAlbums.any((element) => element.id == photoAlbum.id)) {
               Album videoAlbum = videoAlbums.singleWhere((element) => element.id == photoAlbum.id);
               GalleryAlbum videoGalleryAlbum = GalleryAlbum.album(videoAlbum);
               await videoGalleryAlbum.initialize(locale: locale);
               DateTime? lastPhotoDate = entireGalleryAlbum.lastDate;
               DateTime? lastVideoDate = videoGalleryAlbum.lastDate;
-
               if (lastPhotoDate == null) {
                 try {
                   entireGalleryAlbum.thumbnail = await videoAlbum.getThumbnail(highQuality: true);
                 } catch (e) {
                   if (kDebugMode) {
-                    print(e);
+                    print("=========$e");
                   }
                 }
               } else if (lastVideoDate == null) {
@@ -288,7 +288,7 @@ class GalleryPickerCubit extends Cubit<double> {
           tempGalleryAlbums.add(entireGalleryAlbum);
         }
       }
-      if (isVideo) {
+      if (pickType == PickType.onlyVideo || pickType == PickType.imageOrVideo) {
         for (var videoAlbum in videoAlbums) {
           GalleryAlbum galleryVideoAlbum = GalleryAlbum.album(videoAlbum);
           await galleryVideoAlbum.initialize(locale: locale);

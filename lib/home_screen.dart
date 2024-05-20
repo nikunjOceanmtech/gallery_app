@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
 import 'package:gallery_app/features/image_or_video_show/presentation/view/image_or_video_show_screen.dart';
+import 'package:gallery_app/global.dart';
 
 import 'features/gallery_picker/presentation/pages/gallery_picker_view.dart';
 
@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
         body: GridView.builder(
           itemCount: selectedMediaList.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
+            crossAxisCount: 4,
           ),
           itemBuilder: (context, index) {
             if (selectedMediaList[index].thumbnail != null) {
@@ -45,17 +45,43 @@ class _HomeScreenState extends State<HomeScreen> {
             return const SizedBox();
           },
         ),
-        floatingActionButton: FloatingActionButton(
+        bottomNavigationBar: bottomNavigationBar(context: context),
+      ),
+    );
+  }
+
+  Widget bottomNavigationBar({required BuildContext context}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton(
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) {
                   return GalleryPickerView(
+                    pickType: PickType.onlyImage,
                     onSelect: (selectedMedia) {
-                      if (kDebugMode) {
-                        print("============$selectedMedia");
-                      }
+                      selectedMediaList.addAll(selectedMedia);
+                      setState(() {});
+                    },
+                  );
+                },
+              ),
+            );
+          },
+          child: const Text("Only Image"),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return GalleryPickerView(
+                    pickType: PickType.onlyVideo,
+                    onSelect: (selectedMedia) {
                       selectedMediaList = selectedMedia;
                       setState(() {});
                     },
@@ -64,8 +90,28 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             );
           },
+          child: const Text("Only Video"),
         ),
-      ),
+        ElevatedButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return GalleryPickerView(
+                    pickType: PickType.imageOrVideo,
+                    onSelect: (selectedMedia) {
+                      selectedMediaList = selectedMedia;
+                      setState(() {});
+                    },
+                  );
+                },
+              ),
+            );
+          },
+          child: const Text("Image Or Video"),
+        ),
+      ],
     );
   }
 }

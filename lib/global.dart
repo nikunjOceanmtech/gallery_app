@@ -124,3 +124,5 @@ class RouteList {
   static const String home_screen = "/home_sceen";
   static const String image_or_video_show_screen = "/image_or_video_show_screen";
 }
+
+enum PickType { onlyImage, onlyVideo, imageOrVideo }

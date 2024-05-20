@@ -29,8 +29,10 @@ class GalleryPickerView extends StatefulWidget {
     List<MediaFile> media,
     BuildContext context,
   )? multipleMediaBuilder;
+  final PickType pickType;
 
   const GalleryPickerView({
+    required this.pickType,
     super.key,
     this.config,
     required this.onSelect,
@@ -65,11 +67,13 @@ class _GalleryPickerState extends State<GalleryPickerView> {
       initSelectedMedias: widget.initSelectedMedia,
       extraRecentMedia: widget.extraRecentMedia,
       isRecent: widget.startWithRecent,
-      isVideo: true,
     );
     config = galleryPickerCubit.config;
     if (!galleryPickerCubit.isInitialized) {
-      galleryPickerCubit.initializeAlbums(locale: widget.locale, isVideo: false);
+      galleryPickerCubit.initializeAlbums(
+        locale: widget.locale,
+        pickType: widget.pickType,
+      );
     }
     galleryPickerCubit.loadingData(isLoading: false);
     super.initState();
@@ -118,26 +122,27 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                                 )
                               ]
                             : [
-                                Text(
-                                  "Videos Show :-",
-                                  style: TextStyle(
-                                    color: AppColor.blackColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                galleryPickerCubit.selectedFiles.isNotEmpty
-                                    ? const SizedBox()
-                                    : Checkbox(
-                                        value: noPhotoSeleceted,
-                                        onChanged: (value) async {
-                                          noPhotoSeleceted = value ?? false;
-                                          await galleryPickerCubit.initializeAlbums(
-                                            locale: widget.locale,
-                                            isVideo: noPhotoSeleceted,
-                                          );
-                                        },
-                                      ),
+                                // Text(
+                                //   "Videos Show :-",
+                                //   style: TextStyle(
+                                //     color: AppColor.blackColor,
+                                //     fontWeight: FontWeight.bold,
+                                //     fontSize: 18,
+                                //   ),
+                                // ),
+                                // galleryPickerCubit.selectedFiles.isNotEmpty
+                                //     ? const SizedBox()
+                                //     : Checkbox(
+                                //         value: noPhotoSeleceted,
+                                //         onChanged: (value) async {
+                                //           noPhotoSeleceted = value ?? false;
+                                //           await galleryPickerCubit.initializeAlbums(
+                                //             pickType: PickType.onlyImage,
+                                //             locale: widget.locale,
+                                //             isVideo: noPhotoSeleceted,
+                                //           );
+                                //         },
+                                //       ),
                               ],
                       ),
                       body: Column(
