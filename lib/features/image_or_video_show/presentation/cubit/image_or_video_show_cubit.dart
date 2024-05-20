@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
-import 'package:gallery_app/models/media_file.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
 import 'package:video_player/video_player.dart';
 
 class ImageOrVideoShowCubit extends Cubit<double> {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/di/get_it.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
 import 'package:gallery_app/features/image_or_video_show/presentation/cubit/image_or_video_show_cubit.dart';
 import 'package:gallery_app/global.dart';
-import 'package:gallery_app/models/media_file.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

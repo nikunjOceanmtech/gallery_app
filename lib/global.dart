@@ -74,6 +74,8 @@ final Uint8List kTransparentImage = Uint8List.fromList(
   ],
 );
 
+late GalleryPickerCubit galleryPickerCubit;
+
 class AppColor {
   static Color primaryColor = const Color(0xff084277);
   static Color whiteColor = const Color(0xffffffff);
@@ -81,11 +83,46 @@ class AppColor {
 }
 
 Widget commonLoadingBar() {
-  return CircularProgressIndicator(
-    color: AppColor.whiteColor,
-    strokeWidth: 3,
-    backgroundColor: AppColor.primaryColor,
+  return Center(
+    child: CircularProgressIndicator(
+      color: AppColor.whiteColor,
+      strokeWidth: 3,
+      backgroundColor: AppColor.primaryColor,
+    ),
   );
 }
 
-late GalleryPickerCubit galleryPickerCubit;
+Widget dataNotFound({required String text}) {
+  return SizedBox(
+    height: double.infinity,
+    width: double.infinity,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          'assets/images/no_data_found.png',
+          height: 200,
+          errorBuilder: (context, error, stackTrace) {
+            return Image.asset(
+              "assets/images/warning.png",
+              color: AppColor.primaryColor,
+              height: 40,
+            );
+          },
+        ),
+        const SizedBox(height: 30),
+        Text(
+          text,
+          style: const TextStyle(fontSize: 20),
+        ),
+      ],
+    ),
+  );
+}
+
+class RouteList {
+  static const String home_screen = "/home_sceen";
+  static const String image_or_video_show_screen = "/image_or_video_show_screen";
+}
+
+enum PickType { onlyImage, onlyVideo, imageOrVideo }
