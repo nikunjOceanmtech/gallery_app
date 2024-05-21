@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/config.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/album_data_view.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/thumbnail_album.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/album_data_view.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/thumbnail_album.dart';
 import 'package:gallery_app/global.dart';
 
 class AlbumCategoriesView extends StatelessWidget {

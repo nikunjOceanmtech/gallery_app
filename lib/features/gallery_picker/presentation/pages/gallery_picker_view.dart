@@ -4,11 +4,11 @@ import 'package:gallery_app/features/gallery_picker/data/models/config.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/album_categories_view.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/album_medias_view.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/album_page.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/appbars.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/permission_denied_view.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/album_categories_view.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/album_medias_view.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/album_page.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/appbars.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/permission_denied_view.dart';
 import 'package:gallery_app/global.dart';
 
 class GalleryPickerView extends StatefulWidget {

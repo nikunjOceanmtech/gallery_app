@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/album_medias_view.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/appbars.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/album_medias_view.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/appbars.dart';
 import 'package:gallery_app/global.dart';
 
 class AlbumDataView extends StatefulWidget {

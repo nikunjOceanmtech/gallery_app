@@ -24,7 +24,7 @@ class GridViewStatic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return verticalView();
+    return 1 == 1 ? horizontalView() : verticalView();
   }
 
   Widget horizontalView() {
