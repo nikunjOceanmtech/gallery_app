@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gallery_app/di/get_it.dart';
@@ -35,7 +34,12 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider<GalleryPickerCubit>.value(value: _galleryPickerCubit),
       ],
-      child: const SafeArea(child: MaterialApp(home: HomeScreen())),
+      child: const SafeArea(
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: HomeScreen(),
+        ),
+      ),
     );
   }
 }
