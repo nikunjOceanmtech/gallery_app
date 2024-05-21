@@ -45,12 +45,12 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
                   child: Center(
                     child: imageOrVideoCubit.file != null
                         ? widget.mediaFile.isImage
-                            ? Image(
+                            ? Image.file(
+                                imageOrVideoCubit.file!,
+                                errorBuilder: (context, error, stackTrace) => Image.asset("assets/images/warning.png"),
                                 height: MediaQuery.of(context).size.height,
                                 width: MediaQuery.of(context).size.width,
                                 fit: BoxFit.contain,
-                                errorBuilder: (context, error, stackTrace) => Image.asset("assets/images/warning.png"),
-                                image: FileImage(imageOrVideoCubit.file!),
                               )
                             : (imageOrVideoCubit.videoController != null)
                                 ? Stack(
@@ -67,7 +67,7 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
                                     ],
                                   )
                                 : commonLoadingBar()
-                        : const Text("Image Not Load..."),
+                        : commonLoadingBar(),
                   ),
                 ),
                 IconButton(
