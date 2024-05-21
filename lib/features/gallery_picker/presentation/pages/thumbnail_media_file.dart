@@ -100,7 +100,7 @@ class ThumbnailMediaFile extends StatelessWidget {
                       left: 10,
                       child: Icon(
                         file.isVideo ? Icons.video_camera_back : null,
-                        color: Colors.white,
+                        color: AppColor.whiteColor,
                         size: 20,
                       ),
                     ),
@@ -109,7 +109,7 @@ class ThumbnailMediaFile extends StatelessWidget {
                       opacity: 0.5,
                       child: Container(
                         color: Colors.black,
-                        child: const Icon(Icons.check, color: Colors.white, size: 45),
+                        child: Icon(Icons.check, color: AppColor.whiteColor, size: 45),
                       ),
                     ),
                 ],

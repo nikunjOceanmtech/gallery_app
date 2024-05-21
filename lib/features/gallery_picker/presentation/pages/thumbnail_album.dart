@@ -74,37 +74,35 @@ class ThumbnailAlbum extends StatelessWidget {
           )
         else
           const SizedBox(),
-        Opacity(opacity: 0.5, child: Container(color: Colors.black)),
-        Positioned(
-          bottom: 5,
-          left: 5,
-          child: Icon(album.icon, color: Colors.white, size: 16),
-        ),
-        Positioned(
-          left: 25,
-          bottom: 5,
-          child: Container(
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.only(left: 2.0),
-            child: Text(
-              album.name ?? "Unnamed Album",
-              maxLines: 1,
-              textAlign: TextAlign.start,
-              style: const TextStyle(color: Colors.white, height: 1.2, fontSize: 12),
-            ),
-          ),
-        ),
-        Positioned(
-          right: 5,
-          bottom: 5,
-          child: Container(
-            alignment: Alignment.topLeft,
-            padding: const EdgeInsets.only(left: 2.0),
-            child: Text(
-              album.count.toString(),
-              textAlign: TextAlign.start,
-              style: const TextStyle(color: Colors.white, height: 1.2, fontSize: 12),
-            ),
+        Opacity(opacity: 0.5, child: Container(color: AppColor.blackColor)),
+        Container(
+          alignment: Alignment.center,
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(album.icon, color: AppColor.whiteColor, size: 16),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  album.name ?? "",
+                  maxLines: 1,
+                  textAlign: TextAlign.start,
+                  style: TextStyle(color: AppColor.whiteColor, height: 1.2, fontSize: 12),
+                ),
+              ),
+              Container(
+                alignment: Alignment.bottomLeft,
+                padding: const EdgeInsets.only(left: 2.0),
+                child: Text(
+                  album.count.toString(),
+                  textAlign: TextAlign.start,
+                  style: TextStyle(color: AppColor.whiteColor, height: 1.2, fontSize: 12),
+                ),
+              ),
+            ],
           ),
         ),
       ],

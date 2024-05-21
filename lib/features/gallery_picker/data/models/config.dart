@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gallery_app/global.dart';
 
 import 'mode.dart';
 
@@ -30,17 +31,17 @@ class Config {
     Widget? selectIcon,
   }) {
     if (backgroundColor == null) {
-      this.backgroundColor = mode == Mode.dark ? const Color.fromARGB(255, 18, 27, 34) : Colors.white;
+      this.backgroundColor = mode == Mode.dark ? const Color.fromARGB(255, 18, 27, 34) : AppColor.whiteColor;
     }
     if (appbarIconColor == null) {
-      this.appbarIconColor = mode == Mode.dark ? Colors.white : const Color.fromARGB(255, 130, 141, 148);
+      this.appbarIconColor = mode == Mode.dark ? AppColor.whiteColor : const Color.fromARGB(255, 130, 141, 148);
     }
     if (underlineColor == null) {
       this.underlineColor =
           mode == Mode.dark ? const Color.fromARGB(255, 6, 164, 130) : const Color.fromARGB(255, 20, 161, 131);
     }
     if (selectedMenuStyle == null) {
-      this.selectedMenuStyle = TextStyle(color: mode == Mode.dark ? Colors.white : Colors.black);
+      this.selectedMenuStyle = TextStyle(color: mode == Mode.dark ? AppColor.whiteColor : AppColor.blackColor);
     }
     if (unselectedMenuStyle == null) {
       this.unselectedMenuStyle =
@@ -48,11 +49,12 @@ class Config {
     }
     if (textStyle == null) {
       this.textStyle = TextStyle(
-          color: mode == Mode.dark ? Colors.grey[300]! : const Color.fromARGB(255, 108, 115, 121),
-          fontWeight: FontWeight.bold);
+        color: mode == Mode.dark ? Colors.grey[300]! : const Color.fromARGB(255, 108, 115, 121),
+        fontWeight: FontWeight.bold,
+      );
     }
     if (appbarTextStyle == null) {
-      this.appbarTextStyle = TextStyle(color: mode == Mode.dark ? Colors.white : Colors.black);
+      this.appbarTextStyle = TextStyle(color: mode == Mode.dark ? AppColor.whiteColor : AppColor.blackColor);
     }
     this.selectIcon = selectIcon ??
         Container(
@@ -62,10 +64,7 @@ class Config {
             shape: BoxShape.circle,
             color: Color.fromARGB(255, 0, 168, 132),
           ),
-          child: const Icon(
-            Icons.check,
-            color: Colors.white,
-          ),
+          child: Icon(Icons.check, color: AppColor.whiteColor),
         );
   }
 }
