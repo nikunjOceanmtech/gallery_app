@@ -14,13 +14,13 @@ class ImageOrVideoShowCubit extends Cubit<double> {
 
   Future<void> loadVideo({required MediaFile mediaFile}) async {
     file = await mediaFile.getFile();
+    emit(Random().nextDouble());
     if (mediaFile.isVideo && file != null) {
       videoController = VideoPlayerController.file(file!);
       await videoController?.initialize();
       videoController?.play();
-      videoController?.addListener(() => emit(Random().nextDouble()));
-    } else {
       emit(Random().nextDouble());
+      videoController?.addListener(() => emit(Random().nextDouble()));
     }
   }
 
