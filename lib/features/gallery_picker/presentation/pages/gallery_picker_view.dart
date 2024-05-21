@@ -188,7 +188,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
             controller: galleryPickerCubit,
             isBottomSheet: widget.isBottomSheet,
             singleMedia: widget.singleMedia,
-            text: noPhotoSeleceted ? "Video Data Not Foound" : "Image Data Not Foound",
+            text: noPhotoSeleceted ? "Data Not Foound" : "Data Not Foound",
           ),
         ],
       ),
@@ -199,7 +199,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
     return galleryPickerCubit.isInitialized && galleryPickerCubit.recent != null
         ? galleryPickerCubit.recent!.dateCategories.isEmpty
             ? dataNotFound(
-                text: noPhotoSeleceted ? "Video Data Not Foound" : "Image Data Not Foound",
+                text: noPhotoSeleceted ? "Data Not Foound" : "Data Not Foound",
               )
             : AlbumMediasView(
                 galleryAlbum: galleryPickerCubit.recent!,
