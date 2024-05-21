@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/album_medias_view.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/appbars.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/album_medias_view.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/appbars.dart';
 
 class AlbumPage extends StatelessWidget {
   final bool singleMedia;

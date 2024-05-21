@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/grid_view_staticd.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/media_view.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/grid_view_staticd.dart';
+import 'package:gallery_app/features/gallery_picker/presentation/widgets/media_view.dart';
 
 class DateCategoryView extends StatelessWidget {
   final GalleryPickerCubit controller;
