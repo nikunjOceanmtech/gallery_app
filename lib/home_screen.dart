@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Future<void> pickMedia({required PickType pickType}) async {
+  Future<void> pickMedia({required PickType pickType, bool isInitialSelectMedia = false}) async {
     List<MediaFile>? data = await Navigator.push(
       context,
       MaterialPageRoute(
@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
           return GalleryPickerView(
             pickType: pickType,
             startWithRecent: true,
-            initSelectedMedia: selectedMediaList,
+            initSelectedMedia: isInitialSelectMedia ? selectedMediaList : [],
           );
         },
       ),
