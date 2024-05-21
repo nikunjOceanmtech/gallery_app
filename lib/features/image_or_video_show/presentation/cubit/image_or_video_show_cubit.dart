@@ -19,6 +19,7 @@ class ImageOrVideoShowCubit extends Cubit<double> {
       videoController = VideoPlayerController.file(file!);
       await videoController?.initialize();
       videoController?.play();
+      emit(Random().nextDouble());
       videoController?.addListener(() => emit(Random().nextDouble()));
     }
   }

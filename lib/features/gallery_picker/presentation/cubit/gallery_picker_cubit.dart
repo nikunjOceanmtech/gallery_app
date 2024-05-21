@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/config.dart';
@@ -162,10 +163,16 @@ class GalleryPickerCubit extends Cubit<double> {
 
   static Future<bool> promptPermissionSetting() async {
     if (Platform.isAndroid) {
-      if (await requestPermission(Permission.photos)) {
-        return await requestPermission(Permission.videos);
+      final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+      final AndroidDeviceInfo info = await deviceInfoPlugin.androidInfo;
+      if (info.version.sdkInt >= 33) {
+        if (await requestPermission(Permission.photos)) {
+          return await requestPermission(Permission.videos);
+        } else {
+          return false;
+        }
       } else {
-        return false;
+        return await requestPermission(Permission.storage);
       }
     }
     bool statusStorage = await requestPermission(Permission.storage);
