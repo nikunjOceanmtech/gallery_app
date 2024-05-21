@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/config.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
@@ -29,13 +27,13 @@ class AlbumCategoriesView extends StatelessWidget {
         : controller.galleryAlbums.first.album.count == 0
             ? dataNotFound(text: text)
             : LayoutBuilder(
-                builder: (context, constraints) {
+                builder: (_, constraints) {
                   return GridView.builder(
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                     ),
                     itemCount: controller.galleryAlbums.length,
-                    itemBuilder: (context, index) {
+                    itemBuilder: (_, index) {
                       return GestureDetector(
                         onTap: () async {
                           var data = await await Navigator.push(
@@ -48,6 +46,7 @@ class AlbumCategoriesView extends StatelessWidget {
                           );
 
                           if (data != null) {
+                            // ignore: use_build_context_synchronously
                             Navigator.pop(context, data);
                           }
                         },
