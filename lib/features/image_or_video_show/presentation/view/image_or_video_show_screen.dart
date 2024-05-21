@@ -43,16 +43,14 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
                 InteractiveViewer(
                   maxScale: double.infinity,
                   child: Center(
-                    child: widget.mediaFile.thumbnail != null
+                    child: imageOrVideoCubit.file != null
                         ? widget.mediaFile.isImage
                             ? Image(
                                 height: MediaQuery.of(context).size.height,
                                 width: MediaQuery.of(context).size.width,
                                 fit: BoxFit.contain,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Image.asset("assets/images/warning.png");
-                                },
-                                image: MemoryImage(widget.mediaFile.thumbnail!),
+                                errorBuilder: (context, error, stackTrace) => Image.asset("assets/images/warning.png"),
+                                image: FileImage(imageOrVideoCubit.file!),
                               )
                             : (imageOrVideoCubit.videoController != null)
                                 ? Stack(
