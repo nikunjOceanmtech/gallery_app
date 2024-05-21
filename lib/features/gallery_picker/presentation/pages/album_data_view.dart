@@ -18,6 +18,7 @@ class _AlbumDataViewState extends State<AlbumDataView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.whiteColor,
       appBar: customAppBar(
         context: context,
         album: widget.album,
@@ -26,33 +27,21 @@ class _AlbumDataViewState extends State<AlbumDataView> {
         isLeadingIcon: true,
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.pop(context, galleryPickerCubit.selectedFiles);
-            },
+            onPressed: () => Navigator.pop(context, galleryPickerCubit.selectedFiles),
             icon: const Icon(Icons.check, size: 30),
           )
         ],
       ),
       body: BlocBuilder<GalleryPickerCubit, double>(
         builder: (context, state) {
-          return imagesView();
+          return AlbumMediasView(
+            galleryAlbum: widget.album,
+            controller: galleryPickerCubit,
+            isBottomSheet: false,
+            singleMedia: false,
+          );
         },
       ),
     );
-  }
-
-  Widget imagesView() {
-    return galleryPickerCubit.isInitialized && galleryPickerCubit.recent != null
-        ? galleryPickerCubit.recent!.dateCategories.isEmpty
-            ? dataNotFound(
-                text: "Data Not Foound",
-              )
-            : AlbumMediasView(
-                galleryAlbum: galleryPickerCubit.recent!,
-                controller: galleryPickerCubit,
-                isBottomSheet: false,
-                singleMedia: false,
-              )
-        : commonLoadingBar();
   }
 }
