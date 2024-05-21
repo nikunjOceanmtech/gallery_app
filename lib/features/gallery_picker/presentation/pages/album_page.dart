@@ -8,14 +8,12 @@ class AlbumPage extends StatelessWidget {
   final bool singleMedia;
   final GalleryPickerCubit controller;
   final GalleryAlbum? album;
-  final bool isBottomSheet;
 
   const AlbumPage({
     super.key,
     required this.album,
     required this.controller,
     required this.singleMedia,
-    required this.isBottomSheet,
   });
 
   @override
@@ -48,7 +46,6 @@ class AlbumPage extends StatelessWidget {
             ? AlbumMediasView(
                 galleryAlbum: album!,
                 controller: controller,
-                isBottomSheet: isBottomSheet,
                 singleMedia: singleMedia,
               )
             : Center(

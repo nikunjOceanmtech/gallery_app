@@ -17,42 +17,39 @@ class AlbumDataView extends StatefulWidget {
 class _AlbumDataViewState extends State<AlbumDataView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppBar(
-        context: context,
-        album: widget.album,
-        isTitleShow: true,
-        isBack: true,
-        isLeadingIcon: true,
-        actions: [
-          IconButton(
+    return BlocBuilder<GalleryPickerCubit, double>(
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: AppColor.whiteColor,
+          appBar: customAppBar(
             onPressed: () {
-              Navigator.pop(context, galleryPickerCubit.selectedFiles);
+              galleryPickerCubit.selectedFiles.clear();
+              galleryPickerCubit.reloadState();
+              Navigator.pop(context);
             },
-            icon: const Icon(Icons.check, size: 30),
-          )
-        ],
-      ),
-      body: BlocBuilder<GalleryPickerCubit, double>(
-        builder: (context, state) {
-          return imagesView();
-        },
-      ),
+            context: context,
+            album: widget.album,
+            isTitleShow: true,
+            isBack: true,
+            isLeadingIcon: true,
+            actions: galleryPickerCubit.selectedFiles.isEmpty
+                ? []
+                : [
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context, galleryPickerCubit.selectedFiles);
+                      },
+                      icon: const Icon(Icons.check, size: 30),
+                    )
+                  ],
+          ),
+          body: AlbumMediasView(
+            galleryAlbum: widget.album,
+            controller: galleryPickerCubit,
+            singleMedia: false,
+          ),
+        );
+      },
     );
-  }
-
-  Widget imagesView() {
-    return galleryPickerCubit.isInitialized && galleryPickerCubit.recent != null
-        ? galleryPickerCubit.recent!.dateCategories.isEmpty
-            ? dataNotFound(
-                text: "Data Not Foound",
-              )
-            : AlbumMediasView(
-                galleryAlbum: galleryPickerCubit.recent!,
-                controller: galleryPickerCubit,
-                isBottomSheet: false,
-                singleMedia: false,
-              )
-        : commonLoadingBar();
   }
 }

@@ -8,14 +8,12 @@ import 'package:gallery_app/global.dart';
 class AlbumCategoriesView extends StatelessWidget {
   final GalleryPickerCubit controller;
   final Config config;
-  final bool isBottomSheet;
   final bool singleMedia;
   final String text;
 
   AlbumCategoriesView({
     super.key,
     required this.controller,
-    required this.isBottomSheet,
     required this.singleMedia,
     required this.text,
   }) : config = controller.config;

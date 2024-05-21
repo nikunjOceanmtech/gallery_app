@@ -8,14 +8,12 @@ class MediaView extends StatelessWidget {
   final MediaFile file;
   final GalleryPickerCubit controller;
   final bool singleMedia;
-  final bool isBottomSheet;
 
   const MediaView(
     this.file, {
     super.key,
     required this.controller,
     required this.singleMedia,
-    required this.isBottomSheet,
   });
 
   @override
@@ -38,13 +36,9 @@ class MediaView extends StatelessWidget {
                 controller.switchPickerMode(value: true);
               } else {
                 controller.onSelect(controller.selectedFiles);
-                if (isBottomSheet) {
-                  controller.switchPickerMode(value: true);
-                  controller.reloadState();
-                } else {
-                  Navigator.pop(context);
-                  controller.reloadState();
-                }
+
+                Navigator.pop(context);
+                controller.reloadState();
               }
             } else {
               controller.selectMedia(file: file);
@@ -85,14 +79,10 @@ class MediaView extends StatelessWidget {
                   controller.switchPickerMode(value: true);
                 } else {
                   controller.onSelect(controller.selectedFiles);
-                  if (isBottomSheet) {
-                    controller.switchPickerMode(value: true);
-                    controller.reloadState();
-                  } else {
-                    Navigator.pop(context);
-                    controller.reloadState();
-                    controller.disposeController();
-                  }
+
+                  Navigator.pop(context);
+                  controller.reloadState();
+                  controller.disposeController();
                 }
               }
             }

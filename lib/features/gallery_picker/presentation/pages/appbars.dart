@@ -14,6 +14,7 @@ AppBar customAppBar({
   Color? leadingIconColor,
   Color? backgroundColor,
   Color? textColor,
+  void Function()? onPressed,
 }) {
   return AppBar(
     backgroundColor: backgroundColor ?? AppColor.whiteColor,
@@ -21,7 +22,7 @@ AppBar customAppBar({
     leadingWidth: isLeadingIcon ? 50 : 0,
     leading: isLeadingIcon
         ? IconButton(
-            onPressed: () => isBack ? Navigator.pop(context) : controller?.backToPicker(),
+            onPressed: onPressed ?? () => isBack ? Navigator.pop(context) : controller?.backToPicker(),
             icon: Icon(Icons.arrow_back_ios_new_rounded, color: leadingIconColor ?? AppColor.blackColor),
           )
         : const SizedBox.shrink(),

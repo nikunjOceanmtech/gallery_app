@@ -6,14 +6,12 @@ import 'package:gallery_app/features/gallery_picker/presentation/pages/date_cate
 class AlbumMediasView extends StatelessWidget {
   final GalleryPickerCubit controller;
   final bool singleMedia;
-  final bool isBottomSheet;
   final GalleryAlbum galleryAlbum;
 
   const AlbumMediasView({
     super.key,
     required this.galleryAlbum,
     required this.controller,
-    required this.isBottomSheet,
     required this.singleMedia,
   });
 
@@ -27,7 +25,6 @@ class AlbumMediasView extends StatelessWidget {
             return DateCategoryView(
               category: checkCategories(galleryAlbum.dateCategories)[index],
               controller: controller,
-              isBottomSheet: isBottomSheet,
               singleMedia: singleMedia,
             );
           },

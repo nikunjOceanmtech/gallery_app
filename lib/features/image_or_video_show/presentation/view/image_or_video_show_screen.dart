@@ -41,32 +41,35 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
           builder: (context, state) {
             return Stack(
               children: [
-                Center(
-                  child: imageOrVideoCubit.file != null
-                      ? widget.mediaFile.isImage
-                          ? Image.file(
-                              imageOrVideoCubit.file!,
-                              errorBuilder: (context, error, stackTrace) => Image.asset("assets/images/warning.png"),
-                              height: MediaQuery.of(context).size.height,
-                              width: MediaQuery.of(context).size.width,
-                              fit: BoxFit.contain,
-                            )
-                          : (imageOrVideoCubit.videoController != null)
-                              ? Stack(
-                                  alignment: Alignment.bottomCenter,
-                                  children: [
-                                    Center(
-                                      child: AspectRatio(
-                                        aspectRatio: imageOrVideoCubit.videoController!.value.aspectRatio,
-                                        child: VideoPlayer(imageOrVideoCubit.videoController!),
+                InteractiveViewer(
+                  maxScale: double.infinity,
+                  child: Center(
+                    child: imageOrVideoCubit.file != null
+                        ? widget.mediaFile.isImage
+                            ? Image.file(
+                                imageOrVideoCubit.file!,
+                                errorBuilder: (context, error, stackTrace) => Image.asset("assets/images/warning.png"),
+                                height: MediaQuery.of(context).size.height,
+                                width: MediaQuery.of(context).size.width,
+                                fit: BoxFit.contain,
+                              )
+                            : (imageOrVideoCubit.videoController != null)
+                                ? Stack(
+                                    alignment: Alignment.bottomCenter,
+                                    children: [
+                                      Center(
+                                        child: AspectRatio(
+                                          aspectRatio: imageOrVideoCubit.videoController!.value.aspectRatio,
+                                          child: VideoPlayer(imageOrVideoCubit.videoController!),
+                                        ),
                                       ),
-                                    ),
-                                    playPauseIconView(),
-                                    sliderView(),
-                                  ],
-                                )
-                              : commonLoadingBar()
-                      : commonLoadingBar(),
+                                      playPauseIconView(),
+                                      sliderView(),
+                                    ],
+                                  )
+                                : commonLoadingBar()
+                        : commonLoadingBar(),
+                  ),
                 ),
                 IconButton(
                   onPressed: () => Navigator.pop(context),

@@ -14,7 +14,6 @@ import 'package:gallery_app/global.dart';
 class GalleryPickerView extends StatefulWidget {
   final Config? config;
   final bool startWithRecent;
-  final bool isBottomSheet;
   final Locale? locale;
   final List<MediaFile>? initSelectedMedia;
   final List<MediaFile>? extraRecentMedia;
@@ -37,7 +36,6 @@ class GalleryPickerView extends StatefulWidget {
     this.initSelectedMedia,
     this.extraRecentMedia,
     this.singleMedia = false,
-    this.isBottomSheet = false,
     this.heroBuilder,
     this.locale,
     this.multipleMediaBuilder,
@@ -101,11 +99,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                 children: [
                   PopScope(
                     canPop: true,
-                    onPopInvoked: (value) {
-                      if (!widget.isBottomSheet) {
-                        galleryPickerCubit.disposeController();
-                      }
-                    },
+                    onPopInvoked: (value) {},
                     child: Scaffold(
                       backgroundColor: config.backgroundColor,
                       appBar: customAppBar(
@@ -158,7 +152,6 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                     album: galleryPickerCubit.selectedAlbum,
                     controller: galleryPickerCubit,
                     singleMedia: widget.singleMedia,
-                    isBottomSheet: widget.isBottomSheet,
                   )
                 ],
               )
@@ -186,7 +179,6 @@ class _GalleryPickerState extends State<GalleryPickerView> {
           imagesView(),
           AlbumCategoriesView(
             controller: galleryPickerCubit,
-            isBottomSheet: widget.isBottomSheet,
             singleMedia: widget.singleMedia,
             text: noPhotoSeleceted ? "Data Not Foound" : "Data Not Foound",
           ),
@@ -204,32 +196,31 @@ class _GalleryPickerState extends State<GalleryPickerView> {
             : AlbumMediasView(
                 galleryAlbum: galleryPickerCubit.recent!,
                 controller: galleryPickerCubit,
-                isBottomSheet: widget.isBottomSheet,
                 singleMedia: widget.singleMedia,
               )
         : commonLoadingBar();
   }
 
   Widget tabBarView() {
-    return InkWell(
-      onTap: () {
-        galleryPickerCubit.pickerPageController.animateToPage(
-          0,
-          duration: const Duration(milliseconds: 50),
-          curve: Curves.easeIn,
-        );
-        galleryPickerCubit.isRecent = true;
-        galleryPickerCubit.switchPickerMode(value: false);
-      },
-      child: Container(
-        width: width,
-        height: 48,
-        color: AppColor.whiteColor,
-        alignment: Alignment.center,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Container(
+    return Container(
+      width: width,
+      height: 48,
+      color: AppColor.whiteColor,
+      alignment: Alignment.center,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          InkWell(
+            onTap: () {
+              galleryPickerCubit.pickerPageController.animateToPage(
+                0,
+                duration: const Duration(milliseconds: 50),
+                curve: Curves.easeIn,
+              );
+              galleryPickerCubit.isRecent = true;
+              galleryPickerCubit.switchPickerMode(value: false);
+            },
+            child: Container(
               decoration: galleryPickerCubit.isRecent
                   ? BoxDecoration(border: Border(bottom: BorderSide(color: AppColor.primaryColor, width: 3.0)))
                   : null,
@@ -245,34 +236,35 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                 ),
               ),
             ),
-            Container(
+          ),
+          InkWell(
+            onTap: () {
+              galleryPickerCubit.pickerPageController.animateToPage(
+                1,
+                duration: const Duration(milliseconds: 50),
+                curve: Curves.easeIn,
+              );
+              galleryPickerCubit.isRecent = false;
+              galleryPickerCubit.switchPickerMode(value: false);
+            },
+            child: Container(
               decoration: !galleryPickerCubit.isRecent
                   ? BoxDecoration(border: Border(bottom: BorderSide(color: AppColor.primaryColor, width: 3.0)))
                   : null,
               height: 48,
               width: width / 2,
-              child: TextButton(
-                onPressed: () {
-                  galleryPickerCubit.pickerPageController.animateToPage(
-                    1,
-                    duration: const Duration(milliseconds: 50),
-                    curve: Curves.easeIn,
-                  );
-                  galleryPickerCubit.isRecent = false;
-                  galleryPickerCubit.switchPickerMode(value: false);
-                },
-                child: Text(
-                  config.gallery.toCamelcase(),
-                  style: TextStyle(
-                    color: AppColor.blackColor,
-                    fontWeight: !galleryPickerCubit.isRecent ? FontWeight.bold : FontWeight.w500,
-                    fontSize: 18,
-                  ),
+              alignment: Alignment.center,
+              child: Text(
+                config.gallery.toCamelcase(),
+                style: TextStyle(
+                  color: AppColor.blackColor,
+                  fontWeight: !galleryPickerCubit.isRecent ? FontWeight.bold : FontWeight.w500,
+                  fontSize: 18,
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

@@ -8,13 +8,11 @@ class DateCategoryView extends StatelessWidget {
   final GalleryPickerCubit controller;
   final bool singleMedia;
   final DateCategory category;
-  final bool isBottomSheet;
 
   const DateCategoryView({
     super.key,
     required this.category,
     required this.controller,
-    required this.isBottomSheet,
     required this.singleMedia,
   });
 
@@ -54,7 +52,6 @@ class DateCategoryView extends StatelessWidget {
                     medium,
                     controller: controller,
                     singleMedia: singleMedia,
-                    isBottomSheet: isBottomSheet,
                   ),
                 ),
               ],

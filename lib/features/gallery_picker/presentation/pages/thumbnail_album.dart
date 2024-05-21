@@ -18,30 +18,6 @@ class ThumbnailAlbum extends StatelessWidget {
     required this.backgroundColor,
   });
 
-  Color adjustFailedBgColor() {
-    if (mode == Mode.dark) {
-      return lighten(
-        backgroundColor,
-      );
-    } else {
-      return darken(backgroundColor);
-    }
-  }
-
-  Color darken(Color color, [double amount = .03]) {
-    assert(amount >= 0 && amount <= 1);
-    final hsl = HSLColor.fromColor(color);
-    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
-    return hslDark.toColor();
-  }
-
-  Color lighten(Color color, [double amount = .05]) {
-    assert(amount >= 0 && amount <= 1);
-    final hsl = HSLColor.fromColor(color);
-    final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
-    return hslLight.toColor();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -49,7 +25,7 @@ class ThumbnailAlbum extends StatelessWidget {
       children: [
         if (album.thumbnail == null)
           Container(
-            color: adjustFailedBgColor(),
+            color: Colors.black12,
             child: Icon(
               album.type == AlbumType.image
                   ? Icons.image_not_supported
@@ -63,9 +39,7 @@ class ThumbnailAlbum extends StatelessWidget {
         else if (album.thumbnail != null)
           FadeInImage(
             imageErrorBuilder: (context, error, stackTrace) {
-              return Image.asset(
-                "assets/images/warning.png",
-              );
+              return Image.asset("assets/images/warning.png");
             },
             image: MemoryImage(Uint8List.fromList(album.thumbnail!)),
             fadeInDuration: const Duration(milliseconds: 200),
