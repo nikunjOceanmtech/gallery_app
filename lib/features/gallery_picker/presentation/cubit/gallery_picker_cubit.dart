@@ -343,6 +343,4 @@ class GalleryPickerCubit extends Cubit<double> {
     _pickerMode = value;
     emit(Random().nextDouble());
   }
-
-   
 }
