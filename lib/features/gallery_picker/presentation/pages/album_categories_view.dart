@@ -30,6 +30,7 @@ class AlbumCategoriesView extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => AlbumDataView(
+                                singleMedia: singleMedia,
                                 album: galleryPickerCubit.galleryAlbums[index],
                               ),
                             ),

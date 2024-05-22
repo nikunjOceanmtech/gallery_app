@@ -27,25 +27,7 @@ class MediaView extends StatelessWidget {
           onLongPress: () async {
             if (singleMedia) {
               galleryPickerCubit.selectedFiles.add(file);
-              if (galleryPickerCubit.heroBuilder != null) {
-                await Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (BuildContext context) {
-                      return galleryPickerCubit.heroBuilder!(file.id, file, context);
-                    },
-                  ),
-                );
-                galleryPickerCubit.switchPickerMode(value: true);
-              } else {
-                galleryPickerCubit.onSelect(galleryPickerCubit.selectedFiles);
-                if (isBottomSheet) {
-                  galleryPickerCubit.switchPickerMode(value: true);
-                  galleryPickerCubit.reloadState();
-                } else {
-                  Navigator.pop(context);
-                  galleryPickerCubit.reloadState();
-                }
-              }
+              Navigator.pop(context, galleryPickerCubit.selectedFiles);
             } else {
               galleryPickerCubit.selectMedia(file: file);
             }

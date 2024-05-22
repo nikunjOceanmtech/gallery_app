@@ -8,7 +8,9 @@ import 'package:gallery_app/global.dart';
 
 class AlbumDataView extends StatefulWidget {
   final GalleryAlbum album;
-  const AlbumDataView({super.key, required this.album});
+  final bool singleMedia;
+
+  const AlbumDataView({super.key, required this.album, required this.singleMedia});
 
   @override
   State<AlbumDataView> createState() => _AlbumDataViewState();
@@ -33,14 +35,14 @@ class _AlbumDataViewState extends State<AlbumDataView> {
                     IconButton(
                       onPressed: () => Navigator.pop(context, galleryPickerCubit.selectedFiles),
                       icon: const Icon(Icons.check, size: 30),
-                    )
+                    ),
                   ],
           ),
           body: AlbumMediasView(
             galleryAlbum: widget.album,
             controller: galleryPickerCubit,
             isBottomSheet: false,
-            singleMedia: false,
+            singleMedia: widget.singleMedia,
           ),
         );
       },
