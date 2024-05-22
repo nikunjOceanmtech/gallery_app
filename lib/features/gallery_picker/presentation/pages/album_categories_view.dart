@@ -44,10 +44,13 @@ class AlbumCategoriesView extends StatelessWidget {
                         child: Stack(
                           fit: StackFit.passthrough,
                           children: [
-                            ThumbnailAlbum(
-                              album: galleryPickerCubit.galleryAlbums[index],
-                              failIconColor: AppColor.whiteColor,
-                              backgroundColor: AppColor.whiteColor,
+                            Padding(
+                              padding: const EdgeInsets.all(2),
+                              child: ThumbnailAlbum(
+                                album: galleryPickerCubit.galleryAlbums[index],
+                                failIconColor: AppColor.whiteColor,
+                                backgroundColor: AppColor.whiteColor,
+                              ),
                             ),
                           ],
                         ),

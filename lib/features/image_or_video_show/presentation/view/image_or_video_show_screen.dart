@@ -161,12 +161,17 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   splashFactory: NoSplash.splashFactory,
-                  child: Image.asset(
-                    (imageOrVideoCubit.videoController?.value.isPlaying ?? false)
-                        ? 'assets/images/Pause.png'
-                        : 'assets/images/Play.png',
+                  child: Container(
                     height: 40,
-                    errorBuilder: errorPlaceHolder,
+                    width: 40,
+                    alignment: Alignment.center,
+                    child: Image.asset(
+                      (imageOrVideoCubit.videoController?.value.isPlaying ?? false)
+                          ? 'assets/images/pause.png'
+                          : 'assets/images/play.png',
+                      height: 20,
+                      errorBuilder: errorPlaceHolder,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 10),
