@@ -169,7 +169,7 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
                       (imageOrVideoCubit.videoController?.value.isPlaying ?? false)
                           ? 'assets/images/pause.png'
                           : 'assets/images/play.png',
-                      height: 20,
+                      height: 18,
                       errorBuilder: errorPlaceHolder,
                     ),
                   ),
