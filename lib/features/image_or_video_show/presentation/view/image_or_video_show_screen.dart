@@ -66,13 +66,15 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
                           style: TextStyle(color: AppColor.whiteColor, fontSize: 16),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {
-                          galleryPickerCubit.selectedFiles.add(widget.mediaFile);
-                          Navigator.pop(context, galleryPickerCubit.selectedFiles);
-                        },
-                        icon: Icon(Icons.check, color: AppColor.whiteColor),
-                      ),
+                      widget.isSingleMedia
+                          ? IconButton(
+                              onPressed: () {
+                                galleryPickerCubit.selectedFiles.add(widget.mediaFile);
+                                Navigator.pop(context, galleryPickerCubit.selectedFiles);
+                              },
+                              icon: Icon(Icons.check, color: AppColor.whiteColor),
+                            )
+                          : const SizedBox.shrink(),
                     ],
                   ),
                 ),
