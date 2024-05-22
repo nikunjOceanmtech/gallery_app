@@ -35,11 +35,7 @@ class ThumbnailAlbum extends StatelessWidget {
           )
         else if (album.thumbnail != null)
           FadeInImage(
-            imageErrorBuilder: (context, error, stackTrace) {
-              return Image.asset(
-                "assets/images/warning.png",
-              );
-            },
+            imageErrorBuilder: errorPlaceHolder,
             image: MemoryImage(Uint8List.fromList(album.thumbnail!)),
             fadeInDuration: const Duration(milliseconds: 200),
             fit: BoxFit.cover,
@@ -81,4 +77,6 @@ class ThumbnailAlbum extends StatelessWidget {
       ],
     );
   }
+
+ 
 }

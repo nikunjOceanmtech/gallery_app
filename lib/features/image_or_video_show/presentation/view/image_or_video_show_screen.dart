@@ -9,7 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ImageOrVideoShowScreen extends StatefulWidget {
   final MediaFile mediaFile;
-  const ImageOrVideoShowScreen({super.key, required this.mediaFile});
+  final bool isSingleMedia;
+  const ImageOrVideoShowScreen({super.key, required this.mediaFile, required this.isSingleMedia});
 
   @override
   State<ImageOrVideoShowScreen> createState() => _ImageOrVideoShowScreenState();
@@ -65,6 +66,13 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
                           style: TextStyle(color: AppColor.whiteColor, fontSize: 16),
                         ),
                       ),
+                      IconButton(
+                        onPressed: () {
+                          galleryPickerCubit.selectedFiles.add(widget.mediaFile);
+                          Navigator.pop(context, galleryPickerCubit.selectedFiles);
+                        },
+                        icon: Icon(Icons.check, color: AppColor.whiteColor),
+                      ),
                     ],
                   ),
                 ),
@@ -104,7 +112,7 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
       maxScale: double.infinity,
       child: Image.file(
         imageOrVideoCubit.file!,
-        errorBuilder: (context, error, stackTrace) => Image.asset("assets/images/warning.png"),
+        errorBuilder: errorPlaceHolder,
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         fit: BoxFit.contain,
@@ -127,12 +135,7 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
   //                     ? 'assets/images/Pause.png'
   //                     : 'assets/images/Play.png',
   //                 height: 50,
-  //                 errorBuilder: (context, error, stackTrace) {
-  //                   return Image.asset(
-  //                     "assets/images/warning.png",
-  //                     height: 40,
-  //                   );
-  //                 },
+  //                 errorBuilder: errorPlaceHolder,
   //               ),
   //             )
   //           : const SizedBox.shrink(),
@@ -161,12 +164,7 @@ class _ImageOrVideoShowScreenState extends State<ImageOrVideoShowScreen> {
                         ? 'assets/images/Pause.png'
                         : 'assets/images/Play.png',
                     height: 40,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        "assets/images/warning.png",
-                        height: 40,
-                      );
-                    },
+                    errorBuilder: errorPlaceHolder,
                   ),
                 ),
                 const SizedBox(width: 10),

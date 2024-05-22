@@ -105,13 +105,7 @@ Widget dataNotFound({required String text}) {
         Image.asset(
           'assets/images/no_data_found.png',
           height: 200,
-          errorBuilder: (context, error, stackTrace) {
-            return Image.asset(
-              "assets/images/warning.png",
-              color: AppColor.primaryColor,
-              height: 40,
-            );
-          },
+          errorBuilder: errorPlaceHolder,
         ),
         const SizedBox(height: 30),
         Text(
@@ -123,18 +117,16 @@ Widget dataNotFound({required String text}) {
   );
 }
 
+Widget errorPlaceHolder(context, error, stackTrace) {
+  return Image.asset("assets/images/warning.png");
+}
+
 class RouteList {
   static const String home_screen = "/home_sceen";
   static const String image_or_video_show_screen = "/image_or_video_show_screen";
 }
 
 enum PickType { onlyImage, onlyVideo, imageOrVideo }
-
-extension StringExtension on String {
-  String toCamelcase() {
-    return toLowerCase().replaceAllMapped(RegExp(r'\b\w'), (match) => match.group(0)!.toUpperCase());
-  }
-}
 
 extension MediumExtension on Medium {
   DateTime? get lastDate => modifiedDate ?? modifiedDate;

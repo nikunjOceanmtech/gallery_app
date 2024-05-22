@@ -51,7 +51,6 @@ class DateCategoryView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 1.5, vertical: 1.5),
                   child: MediaView(
                     category.files[index],
-                    controller: controller,
                     singleMedia: singleMedia,
                     isBottomSheet: isBottomSheet,
                   ),
