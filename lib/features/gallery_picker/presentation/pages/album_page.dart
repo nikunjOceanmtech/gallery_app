@@ -3,6 +3,7 @@ import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.da
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/pages/album_medias_view.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/pages/appbars.dart';
+import 'package:gallery_app/global.dart';
 
 class AlbumPage extends StatelessWidget {
   final bool singleMedia;
@@ -26,7 +27,7 @@ class AlbumPage extends StatelessWidget {
         controller.backToPicker();
       },
       child: Scaffold(
-        backgroundColor: controller.config.backgroundColor,
+        backgroundColor: AppColor.whiteColor,
         appBar: album != null
             ? customAppBar(
                 isTitleShow: true,
@@ -51,12 +52,7 @@ class AlbumPage extends StatelessWidget {
                 isBottomSheet: isBottomSheet,
                 singleMedia: singleMedia,
               )
-            : Center(
-                child: Text(
-                  "No Album Found",
-                  style: controller.config.textStyle,
-                ),
-              ),
+            : dataNotFound(text: "No Album Found"),
       ),
     );
   }

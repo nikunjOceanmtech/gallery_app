@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gallery_app/features/gallery_picker/data/models/config.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
@@ -12,7 +11,6 @@ import 'package:gallery_app/features/gallery_picker/presentation/pages/permissio
 import 'package:gallery_app/global.dart';
 
 class GalleryPickerView extends StatefulWidget {
-  final Config? config;
   final bool startWithRecent;
   final bool isBottomSheet;
   final Locale? locale;
@@ -33,7 +31,6 @@ class GalleryPickerView extends StatefulWidget {
   const GalleryPickerView({
     required this.pickType,
     super.key,
-    this.config,
     this.initSelectedMedia,
     this.extraRecentMedia,
     this.singleMedia = false,
@@ -50,7 +47,6 @@ class GalleryPickerView extends StatefulWidget {
 
 class _GalleryPickerState extends State<GalleryPickerView> {
   bool noPhotoSeleceted = false;
-  late Config config;
 
   @override
   void initState() {
@@ -59,10 +55,8 @@ class _GalleryPickerState extends State<GalleryPickerView> {
   }
 
   Future<void> getData() async {
-    galleryPickerCubit.updateConfig(widget.config);
     galleryPickerCubit.configuration(
       onSelect: (value) {},
-      galleryPickerCubit.config,
       startWithRecent: widget.startWithRecent,
       heroBuilder: widget.heroBuilder,
       multipleMediasBuilder: widget.multipleMediaBuilder,
@@ -70,7 +64,6 @@ class _GalleryPickerState extends State<GalleryPickerView> {
       extraRecentMedia: widget.extraRecentMedia,
       isRecent: true,
     );
-    config = galleryPickerCubit.config;
     if (!galleryPickerCubit.isInitialized) {
       await galleryPickerCubit.initializeAlbums(
         locale: widget.locale,
@@ -107,7 +100,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                       }
                     },
                     child: Scaffold(
-                      backgroundColor: config.backgroundColor,
+                      backgroundColor: AppColor.whiteColor,
                       appBar: customAppBar(
                         context: context,
                         controller: galleryPickerCubit,
@@ -162,7 +155,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                   )
                 ],
               )
-            : galleryPickerCubit.config.permissionDeniedPage ?? PermissionDeniedView(config: galleryPickerCubit.config);
+            : const PermissionDeniedView();
       },
     );
   }
@@ -185,7 +178,6 @@ class _GalleryPickerState extends State<GalleryPickerView> {
         children: [
           imagesView(),
           AlbumCategoriesView(
-            controller: galleryPickerCubit,
             isBottomSheet: widget.isBottomSheet,
             singleMedia: widget.singleMedia,
             text: noPhotoSeleceted ? "Data Not Foound" : "Data Not Foound",
@@ -237,7 +229,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
               alignment: Alignment.center,
               width: width / 2,
               child: Text(
-                config.recents.toCamelcase(),
+                "Recents",
                 style: TextStyle(
                   color: AppColor.blackColor,
                   fontWeight: galleryPickerCubit.isRecent ? FontWeight.bold : FontWeight.w500,
@@ -262,7 +254,7 @@ class _GalleryPickerState extends State<GalleryPickerView> {
                   galleryPickerCubit.switchPickerMode(value: false);
                 },
                 child: Text(
-                  config.gallery.toCamelcase(),
+                  "Gallery",
                   style: TextStyle(
                     color: AppColor.blackColor,
                     fontWeight: !galleryPickerCubit.isRecent ? FontWeight.bold : FontWeight.w500,

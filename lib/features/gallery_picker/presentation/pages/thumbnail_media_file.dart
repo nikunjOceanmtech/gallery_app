@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/global.dart';
 
 class ThumbnailMediaFile extends StatelessWidget {
   final MediaFile file;
   final Color failIconColor;
-  final GalleryPickerCubit controller;
   final BoxFit fit;
   final double? width, height;
   final double radius, borderWidth;
@@ -31,7 +29,6 @@ class ThumbnailMediaFile extends StatelessWidget {
     this.borderColor = Colors.transparent,
     this.borderWidth = 0,
     required this.failIconColor,
-    required this.controller,
   });
 
   @override
@@ -71,7 +68,7 @@ class ThumbnailMediaFile extends StatelessWidget {
                         color: failIconColor,
                       ),
                     )
-                  else if (file.thumbnail != null && controller.heroBuilder != null)
+                  else if (file.thumbnail != null && galleryPickerCubit.heroBuilder != null)
                     Hero(
                       tag: file.id,
                       child: FadeInImage(
@@ -83,7 +80,7 @@ class ThumbnailMediaFile extends StatelessWidget {
                         image: MemoryImage(file.thumbnail!),
                       ),
                     )
-                  else if (file.thumbnail != null && controller.heroBuilder == null)
+                  else if (file.thumbnail != null && galleryPickerCubit.heroBuilder == null)
                     FadeInImage(
                       width: width,
                       height: height,
@@ -100,16 +97,16 @@ class ThumbnailMediaFile extends StatelessWidget {
                       left: 10,
                       child: Icon(
                         file.isVideo ? Icons.video_camera_back : null,
-                        color: Colors.white,
+                        color: AppColor.whiteColor,
                         size: 20,
                       ),
                     ),
-                  if (controller.isSelectedMedia(file: file))
+                  if (galleryPickerCubit.isSelectedMedia(file: file))
                     Opacity(
                       opacity: 0.5,
                       child: Container(
                         color: Colors.black,
-                        child: const Icon(Icons.check, color: Colors.white, size: 45),
+                        child: Icon(Icons.check, color: AppColor.whiteColor, size: 45),
                       ),
                     ),
                 ],

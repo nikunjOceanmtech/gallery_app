@@ -6,11 +6,8 @@ import 'package:bloc/bloc.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:gallery_app/features/gallery_picker/data/models/config.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
-import 'package:gallery_app/features/gallery_picker/data/models/gallery_media.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
-import 'package:gallery_app/features/gallery_picker/data/models/medium.dart';
 import 'package:gallery_app/global.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:photo_gallery/photo_gallery.dart';
@@ -39,10 +36,8 @@ class GalleryPickerCubit extends Cubit<double> {
   late PageController pageController;
   late PageController pickerPageController;
   GalleryAlbum? selectedAlbum;
-  late Config config;
 
-  void configuration(
-    Config? config, {
+  void configuration({
     required dynamic Function(List<MediaFile>) onSelect,
     required Widget Function(String, MediaFile, BuildContext)? heroBuilder,
     required bool isRecent,
@@ -58,7 +53,6 @@ class GalleryPickerCubit extends Cubit<double> {
     this.multipleMediasBuilder = multipleMediasBuilder;
     pageController = PageController();
     pickerPageController = PageController(initialPage: startWithRecent ? 0 : 1);
-    this.config = config ?? Config();
     if (initSelectedMedias != null) {
       _selectedFiles = initSelectedMedias.map((e) => e).toList();
       emit(Random().nextDouble());
@@ -89,11 +83,6 @@ class GalleryPickerCubit extends Cubit<double> {
       selectedAlbum = null;
       emit(Random().nextDouble());
     }
-  }
-
-  void updateConfig(Config? config) {
-    this.config = config ?? Config();
-    emit(Random().nextDouble());
   }
 
   void updateSelectedFiles(List<MediaFile> media) {

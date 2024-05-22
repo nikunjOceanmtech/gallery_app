@@ -39,7 +39,7 @@ class AlbumMediasView extends StatelessWidget {
   List<DateCategory> checkCategories(List<DateCategory> categories) {
     if (controller.isRecent && controller.extraRecentMedia != null && controller.extraRecentMedia!.isNotEmpty) {
       List<DateCategory> categoriesTmp = categories.map((e) => e).toList();
-      int index = categoriesTmp.indexWhere((element) => element.name == controller.config.recent);
+      int index = categoriesTmp.indexWhere((element) => element.name == "Recent");
       if (index != -1) {
         DateCategory category = DateCategory(files: [
           ...controller.extraRecentMedia!,
@@ -52,7 +52,7 @@ class AlbumMediasView extends StatelessWidget {
           DateCategory(
             files: controller.extraRecentMedia!,
             dateTime: controller.extraRecentMedia!.first.lastModified ?? DateTime.now(),
-            name: controller.config.recent,
+            name: "Recent",
           ),
           ...categoriesTmp
         ];

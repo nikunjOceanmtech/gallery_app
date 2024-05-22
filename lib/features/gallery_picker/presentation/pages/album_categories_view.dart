@@ -1,30 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:gallery_app/features/gallery_picker/data/models/config.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/pages/album_data_view.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/pages/thumbnail_album.dart';
 import 'package:gallery_app/global.dart';
 
 class AlbumCategoriesView extends StatelessWidget {
-  final GalleryPickerCubit controller;
-  final Config config;
   final bool isBottomSheet;
   final bool singleMedia;
   final String text;
 
-  AlbumCategoriesView({
-    super.key,
-    required this.controller,
-    required this.isBottomSheet,
-    required this.singleMedia,
-    required this.text,
-  }) : config = controller.config;
+  const AlbumCategoriesView({super.key, required this.isBottomSheet, required this.singleMedia, required this.text});
 
   @override
   Widget build(BuildContext context) {
-    return controller.galleryAlbums.isEmpty
+    return galleryPickerCubit.galleryAlbums.isEmpty
         ? dataNotFound(text: text)
-        : controller.galleryAlbums.first.album.count == 0
+        : galleryPickerCubit.galleryAlbums.first.album.count == 0
             ? dataNotFound(text: text)
             : LayoutBuilder(
                 builder: (_, constraints) {
@@ -32,7 +22,7 @@ class AlbumCategoriesView extends StatelessWidget {
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
                     ),
-                    itemCount: controller.galleryAlbums.length,
+                    itemCount: galleryPickerCubit.galleryAlbums.length,
                     itemBuilder: (_, index) {
                       return GestureDetector(
                         onTap: () async {
@@ -40,7 +30,8 @@ class AlbumCategoriesView extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                               builder: (context) => AlbumDataView(
-                                album: controller.galleryAlbums[index],
+                                singleMedia: singleMedia,
+                                album: galleryPickerCubit.galleryAlbums[index],
                               ),
                             ),
                           );
@@ -54,10 +45,9 @@ class AlbumCategoriesView extends StatelessWidget {
                           fit: StackFit.passthrough,
                           children: [
                             ThumbnailAlbum(
-                              album: controller.galleryAlbums[index],
-                              failIconColor: config.appbarIconColor,
-                              backgroundColor: config.backgroundColor,
-                              mode: config.mode,
+                              album: galleryPickerCubit.galleryAlbums[index],
+                              failIconColor: AppColor.whiteColor,
+                              backgroundColor: AppColor.whiteColor,
                             ),
                           ],
                         ),

@@ -17,11 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: AppColor.whiteColor,
         body: GridView.builder(
           itemCount: selectedMediaList.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-          ),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
           itemBuilder: (context, index) {
             if (selectedMediaList[index].thumbnail != null) {
               return InkWell(
@@ -31,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     MaterialPageRoute(
                       builder: (context) => ImageOrVideoShowScreen(
                         mediaFile: selectedMediaList[index],
+                        isSingleMedia: false,
                       ),
                     ),
                   );
@@ -47,31 +47,48 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget bottomNavigationBar({required BuildContext context}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Wrap(
+      alignment: WrapAlignment.center,
       children: [
         ElevatedButton(
           onPressed: () async => await pickMedia(pickType: PickType.onlyImage),
-          child: const Text("Only Image"),
+          child: const Text("Image"),
         ),
         ElevatedButton(
           onPressed: () async => await pickMedia(pickType: PickType.onlyVideo),
-          child: const Text("Only Video"),
+          child: const Text("Video"),
         ),
         ElevatedButton(
           onPressed: () async => await pickMedia(pickType: PickType.imageOrVideo),
           child: const Text("Image Or Video"),
         ),
+        ElevatedButton(
+          onPressed: () async => await pickMedia(pickType: PickType.onlyImage, singleMedia: true),
+          child: const Text("Signle Image"),
+        ),
+        ElevatedButton(
+          onPressed: () async => await pickMedia(pickType: PickType.onlyVideo, singleMedia: true),
+          child: const Text("Signle Video"),
+        ),
+        ElevatedButton(
+          onPressed: () async => await pickMedia(pickType: PickType.imageOrVideo, singleMedia: true),
+          child: const Text("Signle Image Or Video"),
+        ),
       ],
     );
   }
 
-  Future<void> pickMedia({required PickType pickType, bool isInitialSelectMedia = false}) async {
+  Future<void> pickMedia({
+    required PickType pickType,
+    bool isInitialSelectMedia = false,
+    bool singleMedia = false,
+  }) async {
     List<MediaFile>? data = await Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
           return GalleryPickerView(
+            singleMedia: singleMedia,
             pickType: pickType,
             startWithRecent: true,
             initSelectedMedia: isInitialSelectMedia ? selectedMediaList : [],

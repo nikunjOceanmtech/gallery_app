@@ -27,7 +27,10 @@ class ImageOrVideoShowCubit extends Cubit<double> {
   void playOrPause() {
     isIconShow = true;
     emit(Random().nextDouble());
-    Future.delayed(const Duration(seconds: 1), () => isIconShow = false);
+    Future.delayed(const Duration(seconds: 1), () {
+      isIconShow = false;
+      emit(Random().nextDouble());
+    });
 
     if (videoController?.value.isPlaying ?? false) {
       videoController?.pause();

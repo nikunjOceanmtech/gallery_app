@@ -1,1 +1,0 @@
-enum Mode { dark, light }

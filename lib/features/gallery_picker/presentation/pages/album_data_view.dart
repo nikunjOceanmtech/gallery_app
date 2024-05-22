@@ -8,7 +8,9 @@ import 'package:gallery_app/global.dart';
 
 class AlbumDataView extends StatefulWidget {
   final GalleryAlbum album;
-  const AlbumDataView({super.key, required this.album});
+  final bool singleMedia;
+
+  const AlbumDataView({super.key, required this.album, required this.singleMedia});
 
   @override
   State<AlbumDataView> createState() => _AlbumDataViewState();
@@ -17,42 +19,33 @@ class AlbumDataView extends StatefulWidget {
 class _AlbumDataViewState extends State<AlbumDataView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: customAppBar(
-        context: context,
-        album: widget.album,
-        isTitleShow: true,
-        isBack: true,
-        isLeadingIcon: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context, galleryPickerCubit.selectedFiles);
-            },
-            icon: const Icon(Icons.check, size: 30),
-          )
-        ],
-      ),
-      body: BlocBuilder<GalleryPickerCubit, double>(
-        builder: (context, state) {
-          return imagesView();
-        },
-      ),
+    return BlocBuilder<GalleryPickerCubit, double>(
+      builder: (context, state) {
+        return Scaffold(
+          backgroundColor: AppColor.whiteColor,
+          appBar: customAppBar(
+            context: context,
+            album: widget.album,
+            isTitleShow: true,
+            isBack: true,
+            isLeadingIcon: true,
+            actions: galleryPickerCubit.selectedFiles.isEmpty
+                ? []
+                : [
+                    IconButton(
+                      onPressed: () => Navigator.pop(context, galleryPickerCubit.selectedFiles),
+                      icon: const Icon(Icons.check, size: 30),
+                    ),
+                  ],
+          ),
+          body: AlbumMediasView(
+            galleryAlbum: widget.album,
+            controller: galleryPickerCubit,
+            isBottomSheet: false,
+            singleMedia: widget.singleMedia,
+          ),
+        );
+      },
     );
-  }
-
-  Widget imagesView() {
-    return galleryPickerCubit.isInitialized && galleryPickerCubit.recent != null
-        ? galleryPickerCubit.recent!.dateCategories.isEmpty
-            ? dataNotFound(
-                text: "Data Not Foound",
-              )
-            : AlbumMediasView(
-                galleryAlbum: galleryPickerCubit.recent!,
-                controller: galleryPickerCubit,
-                isBottomSheet: false,
-                singleMedia: false,
-              )
-        : commonLoadingBar();
   }
 }

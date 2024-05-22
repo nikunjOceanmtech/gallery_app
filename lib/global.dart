@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
+import 'package:photo_gallery/photo_gallery.dart';
 
 final Uint8List kTransparentImage = Uint8List.fromList(
   <int>[
@@ -102,13 +105,7 @@ Widget dataNotFound({required String text}) {
         Image.asset(
           'assets/images/no_data_found.png',
           height: 200,
-          errorBuilder: (context, error, stackTrace) {
-            return Image.asset(
-              "assets/images/warning.png",
-              color: AppColor.primaryColor,
-              height: 40,
-            );
-          },
+          errorBuilder: errorPlaceHolder,
         ),
         const SizedBox(height: 30),
         Text(
@@ -120,6 +117,10 @@ Widget dataNotFound({required String text}) {
   );
 }
 
+Widget errorPlaceHolder(context, error, stackTrace) {
+  return Image.asset("assets/images/warning.png");
+}
+
 class RouteList {
   static const String home_screen = "/home_sceen";
   static const String image_or_video_show_screen = "/image_or_video_show_screen";
@@ -127,8 +128,26 @@ class RouteList {
 
 enum PickType { onlyImage, onlyVideo, imageOrVideo }
 
-extension StringExtension on String {
-  String toCamelcase() {
-    return toLowerCase().replaceAllMapped(RegExp(r'\b\w'), (match) => match.group(0)!.toUpperCase());
+extension MediumExtension on Medium {
+  DateTime? get lastDate => modifiedDate ?? modifiedDate;
+}
+
+class GalleryMedia {
+  List<GalleryAlbum> albums;
+  GalleryAlbum? get recent {
+    return albums.singleWhere((element) => element.name == "All");
   }
+
+  GalleryAlbum? getAlbum(String name) {
+    try {
+      return albums.singleWhere((element) => element.name == name);
+    } catch (e) {
+      if (kDebugMode) {
+        print("===========$e");
+      }
+      return null;
+    }
+  }
+
+  GalleryMedia(this.albums);
 }

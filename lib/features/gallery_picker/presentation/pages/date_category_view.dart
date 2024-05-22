@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
-import 'package:gallery_app/features/gallery_picker/presentation/pages/grid_view_staticd.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/pages/media_view.dart';
 
 class DateCategoryView extends StatelessWidget {
@@ -38,27 +37,26 @@ class DateCategoryView extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   category.name,
-                  style: controller.config.textStyle,
+                  style: const TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
                 ),
               ),
             ),
-            GridViewStatic(
-              size: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.zero,
-              crossAxisCount: 4,
-              mainAxisSpacing: 3.0,
-              crossAxisSpacing: 3.0,
-              children: [
-                ...category.files.map(
-                  (medium) => MediaView(
-                    medium,
-                    controller: controller,
+            GridView.builder(
+              itemCount: category.files.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 1.5, vertical: 1.5),
+                  child: MediaView(
+                    category.files[index],
                     singleMedia: singleMedia,
                     isBottomSheet: isBottomSheet,
                   ),
-                ),
-              ],
-            ),
+                );
+              },
+            )
           ],
         );
       },
