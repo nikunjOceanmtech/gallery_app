@@ -1,6 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
+import 'package:photo_gallery/photo_gallery.dart';
 
 final Uint8List kTransparentImage = Uint8List.fromList(
   <int>[
@@ -131,4 +134,28 @@ extension StringExtension on String {
   String toCamelcase() {
     return toLowerCase().replaceAllMapped(RegExp(r'\b\w'), (match) => match.group(0)!.toUpperCase());
   }
+}
+
+extension MediumExtension on Medium {
+  DateTime? get lastDate => modifiedDate ?? modifiedDate;
+}
+
+class GalleryMedia {
+  List<GalleryAlbum> albums;
+  GalleryAlbum? get recent {
+    return albums.singleWhere((element) => element.name == "All");
+  }
+
+  GalleryAlbum? getAlbum(String name) {
+    try {
+      return albums.singleWhere((element) => element.name == name);
+    } catch (e) {
+      if (kDebugMode) {
+        print("===========$e");
+      }
+      return null;
+    }
+  }
+
+  GalleryMedia(this.albums);
 }

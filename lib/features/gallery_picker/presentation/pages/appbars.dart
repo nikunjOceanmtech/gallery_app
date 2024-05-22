@@ -43,9 +43,9 @@ String getTitle({GalleryAlbum? album, GalleryPickerCubit? controller}) {
   } else if (!(controller?.pickerMode ?? false) && (controller?.selectedFiles.isEmpty ?? false)) {
     return "${album?.name}";
   } else if ((controller?.pickerMode ?? false) && (controller?.selectedFiles.isEmpty ?? false)) {
-    return controller?.config.tapPhotoSelect ?? "";
+    return "Tap photo to select";
   } else if ((controller?.pickerMode ?? false) && (controller?.selectedFiles.isNotEmpty ?? false)) {
-    return "${controller?.selectedFiles.length} ${controller?.config.selected}";
+    return "${controller?.selectedFiles.length} Selected";
   } else {
     return "";
   }

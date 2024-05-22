@@ -3,13 +3,10 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart';
-import 'package:gallery_app/features/gallery_picker/data/models/medium.dart';
 import 'package:gallery_app/global.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:photo_gallery/photo_gallery.dart';
-
-import 'config.dart';
 
 class GalleryAlbum {
   late Album album;
@@ -81,17 +78,16 @@ class GalleryAlbum {
   List<MediaFile> get files => dateCategories.expand((element) => element.files).toList();
 
   String getDateCategory(MediaFile media, {Locale? locale}) {
-    Config config = galleryPickerCubit.config;
     DateTime? lastDate = media.lastModified;
     lastDate = lastDate ?? DateTime.now();
     initializeDateFormatting();
     String languageCode = locale != null ? (locale).languageCode : Platform.localeName.split('_')[0];
     if (daysBetween(lastDate) <= 3) {
-      return config.recent;
+      return "Recent";
     } else if (daysBetween(lastDate) > 3 && daysBetween(lastDate) <= 7) {
-      return config.lastWeek;
+      return "Last Week";
     } else if (DateTime.now().month == lastDate.month) {
-      return config.lastMonth;
+      return "Last Month";
     } else if (DateTime.now().year == lastDate.year) {
       String month = DateFormat.MMMM(languageCode).format(lastDate).toString();
       return "$month ${lastDate.day}";

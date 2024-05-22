@@ -17,11 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: AppColor.whiteColor,
         body: GridView.builder(
           itemCount: selectedMediaList.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 4,
-          ),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 4),
           itemBuilder: (context, index) {
             if (selectedMediaList[index].thumbnail != null) {
               return InkWell(
@@ -72,6 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
       MaterialPageRoute(
         builder: (context) {
           return GalleryPickerView(
+            singleMedia: true,
             pickType: pickType,
             startWithRecent: true,
             initSelectedMedia: isInitialSelectMedia ? selectedMediaList : [],

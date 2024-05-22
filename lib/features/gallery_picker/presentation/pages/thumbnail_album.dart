@@ -2,45 +2,18 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:gallery_app/features/gallery_picker/data/models/gallery_album.dart';
-import 'package:gallery_app/features/gallery_picker/data/models/mode.dart';
 import 'package:gallery_app/global.dart';
 
 class ThumbnailAlbum extends StatelessWidget {
   final GalleryAlbum album;
   final Color failIconColor, backgroundColor;
-  final Mode mode;
 
   const ThumbnailAlbum({
     super.key,
     required this.album,
     required this.failIconColor,
-    required this.mode,
     required this.backgroundColor,
   });
-
-  Color adjustFailedBgColor() {
-    if (mode == Mode.dark) {
-      return lighten(
-        backgroundColor,
-      );
-    } else {
-      return darken(backgroundColor);
-    }
-  }
-
-  Color darken(Color color, [double amount = .03]) {
-    assert(amount >= 0 && amount <= 1);
-    final hsl = HSLColor.fromColor(color);
-    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
-    return hslDark.toColor();
-  }
-
-  Color lighten(Color color, [double amount = .05]) {
-    assert(amount >= 0 && amount <= 1);
-    final hsl = HSLColor.fromColor(color);
-    final hslLight = hsl.withLightness((hsl.lightness + amount).clamp(0.0, 1.0));
-    return hslLight.toColor();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +22,7 @@ class ThumbnailAlbum extends StatelessWidget {
       children: [
         if (album.thumbnail == null)
           Container(
-            color: adjustFailedBgColor(),
+            color: AppColor.blackColor,
             child: Icon(
               album.type == AlbumType.image
                   ? Icons.image_not_supported

@@ -3,6 +3,7 @@ import 'package:gallery_app/features/gallery_picker/data/models/media_file.dart'
 import 'package:gallery_app/features/gallery_picker/presentation/cubit/gallery_picker_cubit.dart';
 import 'package:gallery_app/features/gallery_picker/presentation/pages/thumbnail_media_file.dart';
 import 'package:gallery_app/features/image_or_video_show/presentation/view/image_or_video_show_screen.dart';
+import 'package:gallery_app/global.dart';
 
 class MediaView extends StatelessWidget {
   final MediaFile file;
@@ -98,7 +99,7 @@ class MediaView extends StatelessWidget {
             }
           },
           file: file,
-          failIconColor: controller.config.appbarIconColor,
+          failIconColor: AppColor.whiteColor,
           controller: controller,
         ),
       ],
